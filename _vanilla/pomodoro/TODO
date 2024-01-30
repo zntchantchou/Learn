@@ -1,0 +1,30 @@
+
+Persistence: 
+  ☐ Store timer's current time in ms each second
+  ☐ Find good model for timers in localStorage 
+
+Timer: 
+  ☐ implement reset @started(24-01-29 11:09)
+  ☐ Move to its own object (class)
+  ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
+  
+User Input :
+  ☐ handle keypressed numbers 
+  ☐ handle up and down arrows 
+  ☐ handle mousewheel 
+
+Misc: 
+  ☐ Handle svg not displayed in safari
+
+Move timer to its own Object:
+  ☐ status 
+  ☐ timeLeft 
+  ☐ name
+  ☐ element (can be a subObject that handles svg properties)
+  ☐ color (bonus)
+    
+Done:
+  ✔ sync timer and circle @started(24-01-28 22:37) @done(24-01-28 23:12) @lasted(35m1s)
+  ✔ Initialize hardcoded time @done(24-01-29 11:09)
+  ✔ Add svg circle @done(24-01-28 21:10)
+  ✔ place countdown time in the center of svg @started(24-01-28 22:30) @done(24-01-29 11:09) @lasted(12h39m38s)

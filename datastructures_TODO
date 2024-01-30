@@ -1,0 +1,32 @@
+// DSAJS = Data Structures and Algorithms with Javascript (0'Reilly)
+Exercises: 
+
+  page 33 - Arrays in Objects :
+  ☐ 1
+  ☐ 2
+  ☐ 3
+  ☐ 4
+
+  page 47 - Lists :
+  ☐ 1
+  ☐ 2
+  ☐ 3
+  ☐ 4
+  ☐ 5
+  
+  page 57 - Stacks :
+  ☐ 1
+  ☐ 2
+  ☐ 3
+
+
+Binary Tree: 
+    ☐ Implement binary tree
+
+Merkle Tree:
+    ☐ implement
+    ☐ test amount of memory saved vs simple concatenation
+    ☐ validity of a transaction must be verifiable   
+    ☐ Root hash must be obtainable from node's brother + node's uncle
+
+

@@ -1,0 +1,14 @@
+learning path for ethereum
+https://github.com/protofire/blockchain-learning-path
+
+front-end (vue) for avalanche wallet
+https://github.com/ava-labs/avalanche-wallet 
+
+Binance smart chain ecosystem ( project ideas )
+https://github.com/bnb-chain/bsc-ecosystem?tab=readme-ov-file
+
+Mastering Bitcoin via version en ligne (markdown sur github)
+https://github.com/bitcoinbook/bitcoinbook?tab=readme-ov-file
+
+programming bitcoin in javascript 
+https://github.com/bmancini55/programming-bitcoin/tree/master/src

@@ -1,0 +1,29 @@
+THEORY : 
+  ☐ A primer on PUBLIC KEY cryptography
+
+Merkle Tree:
+    ☐ implement
+    ☐ test amount of memory saved vs simple concatenation
+    ☐ validity of a transaction must be verifiable   
+    ☐ Root hash must be obtainable from node's brother + node's uncle
+
+DEVELOPMENT:
+
+✔ Setup TS @done(24-01-13 18:01)
+☐ Setup server
+☐ Setup naive ci/cd
+
+(NodeJS Design patterns, Mario Casciaro)
+NodeJS design patterns :
+
+  ☐ Event emitter
+  ☐ Observable
+  ☐ Generators (https://blog.logrocket.com/understanding-typescript-generators/#creating-generator-function-typescript)
+  ☐ Streams
+  ☐ Piping patterns (Streams)
+  ☐ Decorator
+  ☐ MiddleWare
+  ☐ Dependency injection
+  ☐ Lazy loading
+  ☐ Load balancing
+  ☐ Pub-sub

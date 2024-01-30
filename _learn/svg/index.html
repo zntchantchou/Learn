@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title></title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="./style.css" rel="stylesheet">
+  <script src="./index.js" type="module"></script>
+</head>
+
+<body>
+	<div id="root">
+    <div id="sandbox">
+      <svg viewBox="0 0 100 100">
+        <!-- Circles using circle -->
+         <!-- Top layer is displayed on top -->
+         <circle cx="50" cy="50" r="45"  id="circle-progress" 
+         transform="rotate(-90, 50, 50)" >
+         <circle cx="50" cy="50" r="48" id="circle-background">
+        <!-- Circle using two arcs -->
+        <!-- <path
+        d="M 10,30
+                 A 20,20 1,1,1 50,30
+                 A 20,20 0,0,1 10,30
+                 " fill="none" stroke="blue" /> -->
+      </svg>
+    </div>
+	</div>
+</body>
+</html>

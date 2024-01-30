@@ -1,0 +1,55 @@
+.DS_STORE
+
+# bun
+bun.lockb
+
+# Logs
+logs
+*.log
+npm-debug.log*
+.pnpm-debug.log*
+
+# Dependency directories
+node_modules/
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# common output files
+out
+dist
+.cache/
+.temp
+.cache
+
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+/install-state.gz
+.pnp.*
+
+#bun 
