@@ -9,7 +9,14 @@ function List() {
   this.insert = insert;
   this.clear = clear;
   this.length = length;
-
+  this.contains = contains;
+  this.prev = prev;
+  this.next = next;
+  this.front = front;
+  this.end = end;
+  this.moveTo = moveTo;
+  this.getElement = getElement;
+  this.currPos = currPos;
   /**
    * appends element to the end of the list
    * @param {*} element
@@ -95,6 +102,79 @@ function List() {
     this.dataStore = [];
     this.size = this.dataStore.length;
   }
+
+  /**
+   * return whether the list contains the specified element all the elements stored
+   * @returns {boolean}
+   */
+  function contains(element) {
+    let found = false;
+    for(let i = 0; i < this.dataStore.length; i++) {
+      if(this.dataStore[i] == element) {
+        found = true;
+      }
+    }
+    return found;
+  }
+
+/** set position to first element
+ * @returns {void}
+ */
+  function front() {
+    this.pos = 0;
+  }
+
+/** set position to first element
+ * @returns {void}
+ */
+  function end() {
+    this.pos = this.size - 1;
+  }
+
+/** move back one position
+ * @returns {void}
+ */
+  function prev() {
+    console.log('prev ');
+    if(this.pos >= 0) {
+      --this.pos;
+    }
+  }
+  
+ /** move position forward by one 
+ * @returns {void}
+ */
+  function next() {
+    if(this.pos <= this.size - 1) {
+      ++this.pos;
+    }
+  }
+
+ /** move position to provided index
+ * @returns {void}
+ */
+  function moveTo(position) {
+    if(position && position >= 0 && position < this.size - 1) {
+      this.pos = position;
+      return 
+    }
+  }
+
+/** set position to first element
+ * @returns {*}
+ */
+  function getElement() {
+    if(this.pos >= 0 && this.pos < this.size) {
+      return this.dataStore[this.pos];
+    }
+    console.log('[List.getElement]: index is out of range' )
+    return null;
+  }
+}
+
+// returns the current position (useful for iterator pattern usage)
+function currPos() {
+  return this.pos;
 }
 
 export default List;
