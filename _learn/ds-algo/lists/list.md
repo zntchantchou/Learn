@@ -26,6 +26,6 @@
 
 **next** (_function_) Moves current position forward one element
 
-**currPos** (_function_) Returns the current position in list
+**currentPosition** (_function_) Returns the current position in list
 
 **moveTo** (_function_) Moves the current position to specified position

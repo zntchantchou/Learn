@@ -1,3 +1,5 @@
+import { displayByGender } from "./exercises/ex3";
+
 function List() {
   this.pos = 0;
   this.dataStore = [];
@@ -16,7 +18,36 @@ function List() {
   this.end = end;
   this.moveTo = moveTo;
   this.getElement = getElement;
-  this.currPos = currPos;
+  this.currentPosition = currentPosition;
+  this.isLargestElement = isLargestElement;
+  this.isSmallestElement = isSmallestElement;
+  this.displayByGender = displayByGender;
+
+  /**
+   * whether the list contains the provided element
+   * @param {*} element
+   * @returns {boolean}
+   */
+  function contains(element) {
+    let result = false;
+    for (let i = 0; i < this.size; i++) {
+      if(typeof element === 'string' && typeof this.dataStore[i] === 'string') {
+        console.log('comparing string');
+        if(element.toUpperCase() === this.dataStore[i].toUpperCase()) {
+          result = true;
+          break;
+        }
+      }
+      if (element === this.dataStore[i]) {
+        console.log('comparing non strings');
+        result = true;
+        break;
+      }
+      
+    }
+    return result;
+  }
+
   /**
    * appends element to the end of the list
    * @param {*} element
@@ -104,6 +135,73 @@ function List() {
     this.dataStore = [];
     this.size = this.dataStore.length;
   }
+
+  /** set position to first element
+   * @returns {void}
+   */
+  function front() {
+    this.pos = 0;
+  }
+
+  /** set position to first element
+   * @returns {void}
+   */
+  function end() {
+    this.pos = this.size - 1;
+  }
+
+  /** move back one position
+   * @returns {void}
+   */
+  function prev() {
+    console.log("prev ");
+    if (this.pos >= 0) {
+      --this.pos;
+    }
+  }
+
+  /** move position forward by one
+   * @returns {void}
+   */
+  function next() {
+    if (this.pos <= this.size - 1) {
+      ++this.pos;
+    }
+  }
+
+  /** move position to provided index
+   * @returns {void}
+   */
+  function moveTo(position) {
+    if (position && position >= 0 && position < this.size - 1) {
+      this.pos = position;
+      return;
+    }
+  }
+
+  /** set position to first element
+   * @returns {*}
+   */
+  function getElement() {
+    if (this.pos >= 0 && this.pos < this.size) {
+      return this.dataStore[this.pos];
+    }
+    console.log("[List.getElement]: index is out of range");
+    return null;
+  }
+  // returns the current position (useful for iterator pattern usage)
+  function currentPosition() {
+    return this.pos;
+  }
+
+  function isSmallestElement(element) {
+    return this.toString().some(elt => elt > element);
+  }
+  
+  function isLargestElement(element) {
+    return !this.toString().some(elt => elt > element);
+  }
 }
+
 
 export default List;

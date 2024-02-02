@@ -2,11 +2,12 @@
 Persistence: 
   ☐ Store timer's current time in ms each second
   ☐ Find good model for timers in localStorage 
-
-Timer: 
-  ☐ implement reset @started(24-01-29 11:09)
-  ☐ Move to its own object (class)
-  ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
+  
+  Timer: 
+    ☐ Correct Pause (bug) 
+    ☐ implement reset @started(24-01-29 11:09)
+    ☐ Move to its own object (class)
+    ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
   
 User Input :
   ☐ handle keypressed numbers 

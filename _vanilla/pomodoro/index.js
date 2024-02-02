@@ -46,10 +46,12 @@ function reset() {
 
 function start() {
   console.log("[START]");
+  if(status !== statuses.PAUSED) {
+    progressCircleElt.style.strokeDashoffset = 0;
+  } 
   status = statuses.COUNTING;
   startBtnElt.innerHTML = "pause";
   intervalId = setInterval(tick, 1000);
-  progressCircleElt.style.strokeDashoffset = 0;
   progressCircleElt.transition =
     "stroke-dashoffset 0.2s cubic-bezier(0.23, 1, 0.32, 1)";
   progressCircleElt.style.stroke = "rgb(186, 73, 73)";
