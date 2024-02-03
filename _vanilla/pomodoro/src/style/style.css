@@ -96,10 +96,8 @@
   transition: stroke-dashoffset 0.2s cubic-bezier(0.23, 1, 0.32, 1);
   fill: none;
   stroke: rgb(186, 73, 73);
-  stroke-width: 0.15rem;
+  stroke-width: 0.25rem;
   stroke-linecap: round;
-  /* this is like border: dashed */
-  stroke-dasharray: 282.7433388;
 }
 
 #circle-background {
