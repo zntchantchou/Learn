@@ -3,37 +3,62 @@
   src: url("./fonts/digital/DIGI.TTF");
 }
 
-#background {
+#root {
+  overflow: hidden;
+  position: absolute;
+  bottom: 0px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  padding: 2rem;
   background-color: rgb(186, 73, 73);
-  height: 100vh;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  box-sizing: border-box;
 }
 
-#background > * {
+#root > * {
   padding: 0;
   margin: 0;
   font-weight: 500;
   font-family: "Digi";
   box-sizing: border-box;
+  display: flex;
 }
 
-#timer {
+#timer-stored {
+  width: 15rem;
+  margin-left: 1rem;
+  margin-bottom: 5%;
+  margin-bottom: 5%;
+}
+
+#timer,
+#timer-stored {
   /* background-color: rgba(255, 255, 255, 0.793); */
-  width: 25rem;
   display: flex;
   flex-direction: column;
-  letter-spacing: 0.6rem;
   border-radius: 0.4rem;
   background-color: rgb(73, 73, 73);
   border: rgb(81, 81, 81) solid 0.6em;
+  margin-bottom: 1.5rem;
 }
 
-#counter {
-  border-radius: 0px;
+#timer {
+  width: 25rem;
+}
+
+#timers {
+  display: flex;
+  flex-wrap: wrap;
   width: 100%;
-  height: calc(100% - 4rem);
+  height: 22rem;
+  overflow-y: scroll;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 #controls {
@@ -47,13 +72,24 @@
   padding: 0.3rem;
 }
 
+#timer-stored #start-pause-btn {
+  height: 3rem;
+  width: 3rem;
+}
+#timer-stored .start-btn {
+  padding: 0.2rem 0.6rem 0rem 1rem;
+}
+
+#timer-stored .pause-btn {
+  padding: 0.2srem 0rem 0.6rem 0.4rem;
+}
+
 #start-pause-btn {
   display: flex;
   justify-content: center;
   align-items: center;
   color: white;
-  font-size: 3rem;
-  font-weight: 900;
+  font-size: 2rem;
   height: 5rem;
   width: 5rem;
   box-sizing: border-box;
@@ -77,6 +113,7 @@
 }
 
 #countdown-ctn {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,7 +129,7 @@
   background-color: rgb(186, 73, 73);
   color: white;
   font-size: 2.6rem;
-  width: 12rem;
+  min-width: 10rem;
   height: 4rem;
   border-radius: 0.4rem;
   font-weight: 700;

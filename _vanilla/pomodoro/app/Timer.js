@@ -1,7 +1,8 @@
 import Storage from "./Storage.js";
-import { addIdToElements } from "./utils.js";
+import { addIdToElements } from "../utils.js";
+import { millisecondsToMinsAndSecs } from "../utils.js";
 
-function Timer() {
+function Timer(rootId) {
   this.statuses = Object.freeze({
     PAUSED: "PAUSED",
     STOPPED: "STOPPED",
@@ -9,30 +10,33 @@ function Timer() {
   });
   this.name = "Default";
   this.status = this.statuses.STOPPED;
-  this.anchorElt = document.getElementById("background");
-  this.startBtnElt;
   this.timeLeft = this.totalTime;
-  this.draw = draw;
   this.intervalId;
-  this.milliseconds = this.seconds * 1000;
-  this.timeLeftInMs = this.milliseconds;
+  // METHODS
+  this.draw = draw;
+  this.displayTimeLeft = displayTimeLeft;
   this.click = click;
   this.start = start;
-  this.toggleBtn = toggleBtn;
   this.tick = tick;
   this.pause = pause;
   this.stop = stop;
   this.reset = reset;
   this.setStatus = setStatus;
-  this.svgCircleElt;
   this.getStrokeDashOffset = getStrokeDashOffset;
   this.totalSeconds = totalSeconds;
   this.timeElapsedInSeconds = timeElapsedInSeconds;
-  // circle configuration
+  // SVG
   this.circleRadius = 45;
   this.circleCircumference = 2 * this.circleRadius * Math.PI;
+  // DOM
+  this.startBtnElt;
+  this.anchorElt = document.getElementById(rootId);
+  this.toggleBtn = toggleBtn;
+  this.countDownElt;
+  this.svgCircleElt;
 
   function draw() {
+    if (!this.anchorElt) throw new Error("Invalid anchor provided: ", rootId);
     const divs = Array(5)
       .fill(null)
       .map((_) => document.createElement("div"));
@@ -43,7 +47,7 @@ function Timer() {
       controlsElt,
       startPauseBtn,
     ] = addIdToElements(divs, [
-      "timer",
+      rootId == "timers" ? "timer-stored" : "timer",
       "countdown-ctn",
       "countdown",
       "controls",
@@ -54,10 +58,7 @@ function Timer() {
     startPauseBtn.classList.add("start-btn");
     controlsElt.appendChild(startPauseBtn);
     this.startBtnElt = startPauseBtn;
-    this.startBtnElt.addEventListener("click", () => {
-      this.click();
-      console.log("STATUS : ", this.status);
-    });
+    this.startBtnElt.addEventListener("click", () => this.click());
     countDownContainerElt.innerHTML = `
     <svg viewBox="0 0 100 100">
     <circle cx="50" cy="50" r="45" transform="rotate(-90, 50, 50)" id="circle-progress">
@@ -65,8 +66,8 @@ function Timer() {
     </svg>
     `;
     countDownContainerElt.appendChild(countDownElt);
+    this.countDownElt = countDownElt;
     this.svgCircleElt = countDownContainerElt.children[0];
-    console.log("svgCircleElt ", this.svgCircleElt);
     timerElt.appendChild(countDownContainerElt);
     timerElt.appendChild(controlsElt);
     this.anchorElt.appendChild(timerElt);
@@ -100,17 +101,13 @@ function Timer() {
     this.toggleBtn();
     this.timeLeft = this.totalTime;
     this.svgCircleElt.strokeDashoffset = this.getStrokeDashOffset();
-    console.log("STOK DASH OFFSET", this.getStrokeDashOffset());
     Storage.updateCurrentTimer({ timeLeft: this.timeLeft });
+    this.displayTimeLeft();
   }
 
   function getStrokeDashOffset() {
-    // console.log("this.circ", this.circleCircumference, this.totalSeconds());
-    // console.log("this.timeElapsed", this.timeElapsedInSeconds());
     if (!(this.totalSeconds() && this.timeElapsedInSeconds())) return 0;
     if (this.timeElapsedInSeconds() >= this.totalSeconds()) return 0;
-    console.log("total seconds", this.totalSeconds());
-    console.log("TEIS", this.timeElapsedInSeconds());
     return (
       (this.circleCircumference / this.totalSeconds()) *
       this.timeElapsedInSeconds() *
@@ -119,7 +116,6 @@ function Timer() {
   }
 
   function timeElapsedInSeconds() {
-    // console.log("TIME ELSAPSED ", this.timeLeft, this.totalTime);
     if (this.timeLeft >= this.totalTime) return this.totalSeconds();
     return (this.totalTime - this.timeLeft) / 1000;
   }
@@ -135,19 +131,21 @@ function Timer() {
     this.timeLeft = currentTimer.timeLeft;
     this.totalTime = currentTimer.totalTime;
     this.svgCircleElt.style.strokeDasharray = this.circleCircumference;
-    console.log("GET STROKE DASH OFFSET", this.getStrokeDashOffset());
     this.svgCircleElt.style.strokeDashoffset = this.getStrokeDashOffset();
-    console.log("reset ", this.timeLeft);
+    this.displayTimeLeft();
+  }
+
+  function displayTimeLeft() {
+    this.countDownElt.innerHTML = millisecondsToMinsAndSecs(this.timeLeft);
   }
 
   function tick() {
     console.log("[TICK]", this);
-    console.log("[TICKING] ABOVE 1000");
     this.timeLeft -= 1000;
     this.svgCircleElt.style.strokeDashoffset = this.getStrokeDashOffset();
     Storage.updateCurrentTimer({ timeLeft: this.timeLeft });
+    this.displayTimeLeft();
     if (this.timeLeft < 1000) {
-      console.log("TICK OFFSET <= 1000 ", this.getStrokeDashOffset());
       return this.stop();
     }
   }
@@ -173,11 +171,6 @@ function Timer() {
     this.startBtnElt.classList.remove("start-btn");
     this.startBtnElt.innerHTML = "||";
   }
-  // pause
-  // stop
-  // toggleBtn
-  // reset
-  // editing
 }
 
 export default Timer;

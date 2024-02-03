@@ -1,17 +1,11 @@
-
 Persistence: 
-  ☐ Store timer's current time in ms each second
-  ☐ Initialize time from localStorage
-  ☐ Find good model for timers in localStorage 
-  
+  ☐ Find good model for timers in localStorage @started(24-02-03 18:40)
+
 Timer: 
-  ✔ Correct Pause (bug) @done(24-02-02 13:19)
-  ✔ implement reset @started(24-01-29 11:09) @done(24-02-02 13:28) @lasted(4d2h19m55s)
-  ☐ Move to its own object (class)
   ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
   ☐ Clicking the timer should open an edit Popup
   ☐ Implement restart btn
-
+    
 User Input :
   ☐ handle keypressed numbers 
   ☐ handle up and down arrows 
@@ -19,17 +13,15 @@ User Input :
 
 Misc: 
   ☐ Handle svg not displayed in safari
-
-Move timer to its own Object:
-  ☐ status 
-  ☐ timeLeft 
-  ☐ name
-  ☐ element (can be a subObject that handles svg properties)
-  ☐ color (bonus)
-
-Done:
+      
+Done: 
+  ✔ Store timer's current time in ms each second @done(24-02-03 18:40)
+  ✔ Initialize time from localStorage @done(24-02-03 18:40)
   ✔ sync timer and circle @started(24-01-28 22:37) @done(24-01-28 23:12) @lasted(35m1s)
   ✔ Initialize hardcoded time @done(24-01-29 11:09)
   ✔ Add svg circle @done(24-01-28 21:10)
   ✔ place countdown time in the center of svg @started(24-01-28 22:30) @done(24-01-29 11:09) @lasted(12h39m38s)
+  ✔ Correct Pause (bug) @done(24-02-02 13:19)
+  ✔ implement reset @started(24-01-29 11:09) @done(24-02-02 13:28) @lasted(4d2h19m55s)
+  ✔ Move to its own object (class) @done(24-02-03 18:40)
 
