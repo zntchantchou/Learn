@@ -37,7 +37,7 @@ function Timer(rootId) {
 
   function draw() {
     if (!this.anchorElt) throw new Error("Invalid anchor provided: ", rootId);
-    const divs = Array(5)
+    const divs = Array(6)
       .fill(null)
       .map((_) => document.createElement("div"));
     const [
@@ -46,17 +46,22 @@ function Timer(rootId) {
       countDownElt,
       controlsElt,
       startPauseBtn,
+      resetBtn,
     ] = addIdToElements(divs, [
       rootId == "timers" ? "timer-stored" : "timer",
       "countdown-ctn",
       "countdown",
       "controls",
       "start-pause-btn",
+      "reset-btn",
     ]);
     startPauseBtn.innerHTML = play_unicode_char;
     startPauseBtn.classList.remove("pause-btn");
     startPauseBtn.classList.add("start-btn");
     controlsElt.appendChild(startPauseBtn);
+    console.log("resetBtn ", resetBtn);
+    controlsElt.appendChild(resetBtn);
+
     this.startBtnElt = startPauseBtn;
     this.startBtnElt.addEventListener("click", () => this.click());
     countDownContainerElt.innerHTML = `

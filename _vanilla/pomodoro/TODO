@@ -5,8 +5,20 @@ Timer:
   ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
   ☐ Clicking the timer should open an edit Popup
   ☐ Implement restart btn
-    
+  ☐ Add an edit btn on each timer
+  ☐ Add delete btn on each timer  
+  ☐ Add input for name in edit mode 
+  ☐ Display task name in normal mode 
+
+Timer Interactions:
+ ☐ Starting one timer should pause the current Timer
+ ☐ Started timer should become main timer
+ ☐ Previous timer should go to first position in stored timers list
+ ☐ Add a floating tab to create a new timer 
+ ☐ Add an editMode overlay
+
 User Input :
+  ☐ Add arrows above and below minutes and seconds to update them
   ☐ handle keypressed numbers 
   ☐ handle up and down arrows 
   ☐ handle mousewheel 

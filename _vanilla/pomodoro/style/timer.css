@@ -72,7 +72,8 @@
   padding: 0.3rem;
 }
 
-#timer-stored #start-pause-btn {
+#timer-stored #start-pause-btn,
+#timer-stored #reset-btn {
   height: 3rem;
   width: 3rem;
 }
@@ -84,7 +85,9 @@
   padding: 0.2srem 0rem 0.6rem 0.4rem;
 }
 
-#start-pause-btn {
+#start-pause-btn,
+#reset-btn {
+  margin: 0px 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -96,7 +99,14 @@
   border-radius: 50%;
   cursor: pointer;
   background-color: rgb(186, 73, 73);
-  border: rgb(179, 47, 47) solid 0.2rem;
+}
+
+#reset-btn {
+  background: url("../svg/restart.svg");
+  background-color: rgb(186, 73, 73);
+  background-position: center;
+  background-size: 2rem;
+  background-repeat: no-repeat;
 }
 
 .start-btn {
@@ -107,7 +117,8 @@
   padding: 0.4rem 0rem 0.6rem 0.5rem;
 }
 
-#start-pause-btn:hover {
+#start-pause-btn:hover,
+#reset-btn:hover {
   background-color: rgba(229, 96, 96, 0.677);
   border: rgba(222, 91, 91, 0.602) solid 0.2rem;
 }
