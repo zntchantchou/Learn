@@ -1,8 +1,8 @@
-const DEFAULT_TIME_MS = 3000;
+const DEFAULT_TIME_MS = 30000;
 
 export const DEFAULT_TIMER = {
   totalTime: DEFAULT_TIME_MS,
-  timeLeft: DEFAULT_TIME_MS,
+  timeLeft: 5000,
   name: "Default",
 };
 

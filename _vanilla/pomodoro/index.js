@@ -15,13 +15,8 @@ const progressCircleElt = document.getElementById("circle-progress");
 
 const CIRCLE_RADIUS = 45;
 const circumference = 2 * CIRCLE_RADIUS * Math.PI;
-const minutes = 0;
-const seconds = minutes * 60;
-let milliseconds = seconds * 1000;
-let timeLeftInMs = milliseconds;
-let intervalId;
-let status = statuses.STOPPED;
-new Timer();
+const mainTimer = new Timer();
+mainTimer.draw();
 // /** Size of the step in the progress circle each second */
 // function getTickOffset() {
 //   return circumference / (Storage.getCurrentTimer().totalTime / 1000);
