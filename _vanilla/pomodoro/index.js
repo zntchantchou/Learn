@@ -7,12 +7,6 @@ const statuses = Object.freeze({
   COUNTING: "COUNTING",
 });
 
-const DEFAULT_TIMER = {
-  name: "Default",
-  totalTime: 10000,
-  timeLeft: 1000,
-}
-
 const countdownElt = document.getElementById("countdown");
 const startBtnElt = document.getElementById("start-pause-btn");
 const progressCircleElt = document.getElementById("circle-progress");
@@ -26,9 +20,9 @@ let timeLeftInMs = milliseconds;
 let intervalId;
 let status = statuses.STOPPED;
 
-/** Size of the step in the progress circle each second */ 
+/** Size of the step in the progress circle each second */
 function getTickOffset() {
-  return circumference / (storage.getCurrentTimer().totalTime / 1000);
+  return circumference / (Storage.getCurrentTimer().totalTime / 1000);
 }
 
 function click() {
@@ -41,27 +35,25 @@ function click() {
 }
 
 function getTimeElapsed() {
-  const currentTimer = storage.getCurrentTimer();
-  let result = 0;
-  let hasDecremented = currentTimer && currentTimer.totalTime > currentTimer.timeLeft
-  if(hasDecremented) {
+  const currentTimer = Storage.getCurrentTimer();
+  let result;
+  if (currentTimer && currentTimer.totalTime > currentTimer.timeLeft) {
     result = (currentTimer.totalTime - currentTimer.timeLeft) / 1000;
   }
-  return result;
+  return result ? result : 0;
 }
 
-
 function resetCounter() {
-  console.log("[RESET]");
   startBtnElt.innerHTML = "start";
-  const timeLeft = storage.getCurrentTimer().timeLeft;
+  let timeLeft;
+  let currentTimer = Storage.getCurrentTimer() || DEFAULT_TIMER;
+  timeLeft = currentTimer.timeLeft;
   const tickOffset = getTickOffset();
   timeLeftInMs = timeLeft;
   countdownElt.innerHTML = millisecondsToMinsAndSecs(timeLeft);
-  console.log('TIME ELAPSED', getTimeElapsed())
-  console.log('Tick offset', tickOffset);
   progressCircleElt.style.strokeDasharray = circumference;
-  progressCircleElt.style.strokeDashoffset = -1* tickOffset * getTimeElapsed();
+  const strokeDashoffset = -1 * tickOffset * getTimeElapsed();
+  progressCircleElt.style.strokeDashoffset = strokeDashoffset;
   progressCircleElt.style.stroke = "rgb(186, 73, 73)";
   progressCircleElt.style.visibility = "visible";
   // disable animation when resetting
@@ -70,9 +62,6 @@ function resetCounter() {
 
 function start() {
   console.log("[START]");
-  if(status !== statuses.PAUSED) {
-    progressCircleElt.style.strokeDashoffset = 0;
-  } 
   status = statuses.COUNTING;
   startBtnElt.innerHTML = "pause";
   intervalId = setInterval(tick, 1000);
@@ -92,6 +81,8 @@ function pause() {
 function stop() {
   console.log("[STOP]");
   status = statuses.STOPPED;
+  const currentTimer = Storage.getCurrentTimer();
+  Storage.updateCurrentTimer({ timeLeft: currentTimer.totalTime });
   clearInterval(intervalId);
   progressCircleElt.style.visibility = "hidden";
   resetCounter();
@@ -99,21 +90,14 @@ function stop() {
 
 function tick() {
   console.log("[TICK]");
+  console.log("Status", status);
   timeLeftInMs = Number(timeLeftInMs);
-  if (timeLeftInMs < 1000) {
-    console.log("< 1000");
-  }
   timeLeftInMs -= 1000;
-
   countdownElt.innerHTML = millisecondsToMinsAndSecs(timeLeftInMs);
-  storage.updateCurrentTimer({...storage.getCurrentTimer(), timeLeft: timeLeftInMs})
-
-  if (timeLeftInMs <= 0) {
-    console.log("none");
-    stop();
-
-    return;
-  }
+  Storage.updateCurrentTimer({
+    timeLeft: timeLeftInMs,
+  });
+  if (timeLeftInMs <= 0) return stop();
   let currentOffset = Number(progressCircleElt.style.strokeDashoffset);
   currentOffset -= getTickOffset();
   progressCircleElt.style.strokeDashoffset = currentOffset;
@@ -121,5 +105,4 @@ function tick() {
 
 // START
 startBtnElt.addEventListener("click", click);
-const storage = new Storage();
 resetCounter();
