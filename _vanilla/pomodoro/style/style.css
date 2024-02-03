@@ -20,27 +20,28 @@
 }
 
 #timer {
-  background-color: rgba(255, 255, 255, 0.793);
+  /* background-color: rgba(255, 255, 255, 0.793); */
   width: 25rem;
-  height: 28rem;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
-  padding: 0.5rem;
+  letter-spacing: 0.6rem;
   border-radius: 0.4rem;
+  background-color: rgb(73, 73, 73);
+  border: rgb(81, 81, 81) solid 0.6em;
 }
 
 #counter {
-  background-color: white;
+  border-radius: 0px;
   width: 100%;
   height: calc(100% - 4rem);
 }
 
 #controls {
-  background-color: lightgray;
+  /* background-color: lightgray; */
   width: 100%;
-  height: 4rem;
+  height: 100%;
   display: flex;
+  box-sizing: border-box;
   justify-content: center;
   align-items: center;
   padding: 0.3rem;
@@ -50,17 +51,29 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(186, 73, 73);
   color: white;
-  font-size: 1.5rem;
+  font-size: 3rem;
+  font-weight: 900;
+  height: 5rem;
   width: 5rem;
-  border-radius: 0.4rem;
-  height: 3rem;
+  box-sizing: border-box;
+  border-radius: 50%;
   cursor: pointer;
+  background-color: rgb(186, 73, 73);
+  border: rgb(179, 47, 47) solid 0.2rem;
+}
+
+.start-btn {
+  padding: 0.6rem 0rem 0rem 1rem;
+}
+
+.pause-btn {
+  padding: 0.4rem 0rem 0.6rem 0.5rem;
 }
 
 #start-pause-btn:hover {
-  background-color: rgba(176, 25, 25, 0.677);
+  background-color: rgba(229, 96, 96, 0.677);
+  border: rgba(222, 91, 91, 0.602) solid 0.2rem;
 }
 
 #countdown-ctn {
@@ -69,8 +82,6 @@
   align-items: center;
   background-color: white;
   flex: 1;
-  border-radius: 10px;
-  border: rgb(186, 73, 73) dashed 2px;
 }
 
 #countdown {

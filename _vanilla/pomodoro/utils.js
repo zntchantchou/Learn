@@ -11,3 +11,19 @@ function zeroPadTime(time) {
   let prefix = Number(time) < 10 ? "0" : "";
   return prefix + String(time);
 }
+
+/**
+ * adds n ids to n elements, one id per element
+ * @param {Array<HTMLElement>} elements
+ * @param {Array<string>} ids
+ * @returns {Array<HTMLElement>}
+ */
+export function addIdToElements(elements, ids) {
+  if (elements.length !== ids.length) {
+    console.log("Error at addIdsToElements");
+  }
+  elements.forEach((elt, index) => {
+    elt.id = ids[index];
+  });
+  return elements;
+}

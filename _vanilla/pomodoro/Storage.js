@@ -1,4 +1,4 @@
-const DEFAULT_TIME_MS = 10000;
+const DEFAULT_TIME_MS = 3000;
 
 export const DEFAULT_TIMER = {
   totalTime: DEFAULT_TIME_MS,
