@@ -1,3 +1,4 @@
+
 export const millisecondsToClockTime = (milliseconds) => {
   const hourInMilliseconds = 3600000;
   let hours = Math.floor(milliseconds / hourInMilliseconds);
@@ -9,8 +10,6 @@ export const millisecondsToClockTime = (milliseconds) => {
   secondsInSexagecimal = (secondsInSexagecimal * 100).toFixed(0);
   return zeroPadTime(hours) + ":" +  zeroPadTime(minutes.toFixed(0)) + ":" + zeroPadTime(secondsInSexagecimal);
 };
-
-
 
 function zeroPadTime(time) {
   let prefix = Number(time) < 10 ? "0" : "";
@@ -31,4 +30,22 @@ export function addIdToElements(elements, ids) {
     elt.id = ids[index];
   });
   return elements;
+}
+
+/**
+ * 
+ * @param {*} type 
+ * @param {*} options 
+ */
+export function createElement(type, options = {}) {
+  const element = document.createElement(type);
+  if(options && options.classes && Array.isArray(options.classes)) {
+    options.classes.forEach(c => {
+      element.classList.add(c);
+    })
+  }
+  if(options.id) {
+    element.id = options.id;
+  }
+  return element;
 }
