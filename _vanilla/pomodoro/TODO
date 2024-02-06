@@ -2,30 +2,28 @@ Persistence:
   ☐ Find good model for timers in localStorage @started(24-02-03 18:40)
 
 Timer: 
-  ☐ Clicking the timer should open an edit Popup
   ☐ Add input for name in edit mode
   ☐ Display task name in normal mode 
   ☐ Add delete btn on each timer
-  ☐ Implement restart btn
   ☐ Add an edit btn on each timer
   ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
 
-Timer Interactions:
- ☐ Starting one timer should pause the current Timer
- ☐ Started timer should become main timer
- ☐ Previous timer should go to first position in stored timers list
- ☐ Add a floating tab to create a new timer @started(24-02-06 14:37)
- 
- User Input :
-  ☐ Add arrows above and below minutes and seconds to update them
-  ☐ handle keypressed numbers 
-  ☐ handle up and down arrows 
-  ☐ handle mousewheel 
-  
-Misc: 
-  ☐ Handle svg not displayed in safari
-  ☐ Add images instead of all types of characters inside buttons
+  Timer Interactions:
+    ☐ Starting one timer should pause the current Timer
+    ☐ Started timer should become main timer
+    ☐ Previous timer should go to first position in stored timers list
+    ☐ Add a floating tab to create a new timer @started(24-02-06 14:37)
+
+  User Input :
+    ☐ Add arrows above and below minutes and seconds to update them
+    ☐ handle keypressed numbers 
+    ☐ handle up and down arrows 
+    ☐ handle mousewheel 
     
+  Misc: 
+    ☐ Handle svg not displayed in safari
+    ☐ Add images instead of all types of characters inside buttons
+  
   Done: 
     ✔ Store timer's current time in ms each second @done(24-02-03 18:40)
     ✔ Initialize time from localStorage @done(24-02-03 18:40)
@@ -37,8 +35,8 @@ Misc:
     ✔ implement reset @started(24-01-29 11:09) @done(24-02-02 13:28) @lasted(4d2h19m55s)
     ✔ Move to its own object (class) @done(24-02-03 18:40)
     ✔ Add an editMode overlay @started(24-02-06 14:37) @done(24-02-06 14:37) @lasted(39s)
-
-
-  Time-editor :
-
+    ✔ Implement restart btn @started(24-02-06 19:12) @done(24-02-06 20:08) @lasted(56m35s)
+    ✔ Clicking the timer should open an edit Popup @done(24-02-06 20:08)
     
+Time-editor :
+

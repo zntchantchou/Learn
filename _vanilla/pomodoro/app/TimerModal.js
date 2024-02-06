@@ -12,7 +12,15 @@ export default function TimerModal() {
       classes: ["dialog-content"],
     });
     const nameEditorElt = createElement("div", { classes: ["name-editor"] });
+    const nameInput = document.createElement("input");
+    nameInput.placeholder = "Choose a name";
+    nameInput.type = "text";
     const timeEditor = createElement("div", { classes: ["time-editor"] });
+    const editorControls = Array(3)
+      .fill(null)
+      .map((_) =>
+        createElement("div", { classes: ["editor-control", "increment"] })
+      );
     const footerElt = createElement("div", { classes: ["dialog-footer"] });
   }
 

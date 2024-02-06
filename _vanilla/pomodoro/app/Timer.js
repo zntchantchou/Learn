@@ -15,12 +15,12 @@ function Timer(rootId) {
   // METHODS
   this.draw = draw;
   this.displayTimeLeft = displayTimeLeft;
-  this.click = click;
+  this.clickPlay = clickPlay;
   this.start = start;
   this.tick = tick;
   this.pause = pause;
   this.stop = stop;
-  this.reset = reset;
+  this.syncWithStorage = syncWithStorage;
   this.setStatus = setStatus;
   this.getStrokeDashOffset = getStrokeDashOffset;
   this.totalSeconds = totalSeconds;
@@ -46,7 +46,7 @@ function Timer(rootId) {
       countDownElt,
       controlsElt,
       startPauseBtn,
-      resetBtn,
+      restartBtn,
     ] = addIdToElements(divs, [
       rootId == "timers" ? "timer-stored" : "timer",
       "countdown-ctn",
@@ -59,11 +59,12 @@ function Timer(rootId) {
     startPauseBtn.classList.remove("pause-btn");
     startPauseBtn.classList.add("start-btn");
     controlsElt.appendChild(startPauseBtn);
-    console.log("resetBtn ", resetBtn);
-    controlsElt.appendChild(resetBtn);
+    console.log("restartBtn ", restartBtn);
+    controlsElt.appendChild(restartBtn);
 
     this.startBtnElt = startPauseBtn;
-    this.startBtnElt.addEventListener("click", () => this.click());
+    restartBtn.addEventListener("click", () => this.stop());
+    this.startBtnElt.addEventListener("click", () => this.clickPlay());
     countDownContainerElt.innerHTML = `
     <svg viewBox="0 0 100 100">
     <circle cx="50" cy="50" r="45" transform="rotate(-90, 50, 50)" id="circle-progress">
@@ -76,7 +77,7 @@ function Timer(rootId) {
     timerElt.appendChild(countDownContainerElt);
     timerElt.appendChild(controlsElt);
     this.anchorElt.appendChild(timerElt);
-    this.reset();
+    this.syncWithStorage();
   }
 
   function setStatus(status) {
@@ -105,14 +106,22 @@ function Timer(rootId) {
     this.status = this.statuses.STOPPED;
     this.toggleBtn();
     this.timeLeft = this.totalTime;
-    this.svgCircleElt.strokeDashoffset = this.getStrokeDashOffset();
     Storage.updateCurrentTimer({ timeLeft: this.timeLeft });
+    this.svgCircleElt.style.strokeDashoffset = this.getStrokeDashOffset();
     this.displayTimeLeft();
   }
 
   function getStrokeDashOffset() {
     if (!(this.totalSeconds() && this.timeElapsedInSeconds())) return 0;
     if (this.timeElapsedInSeconds() >= this.totalSeconds()) return 0;
+    console.log(
+      "GET STROKE DASH ",
+      this.circleCircumference,
+      "this.totalSeconds()",
+      this.totalSeconds(),
+      "this.timeElapsedInSeconds()",
+      this.timeElapsedInSeconds()
+    );
     return (
       (this.circleCircumference / this.totalSeconds()) *
       this.timeElapsedInSeconds() *
@@ -121,7 +130,10 @@ function Timer(rootId) {
   }
 
   function timeElapsedInSeconds() {
-    if (this.timeLeft >= this.totalTime) return this.totalSeconds();
+    if (this.timeLeft >= this.totalTime) {
+      console.log("this.totalSeconds", this.totalSeconds());
+      return 0;
+    }
     return (this.totalTime - this.timeLeft) / 1000;
   }
 
@@ -129,19 +141,21 @@ function Timer(rootId) {
     return this.totalTime ? this.totalTime / 1000 : 0;
   }
 
-  function reset() {
-    console.log("[RESET]", this);
+  function syncWithStorage() {
+    console.log("[RESET]");
     this.status = this.statuses.STOPPED;
     let currentTimer = Storage.getCurrentTimer() || DEFAULT_TIMER;
     this.timeLeft = currentTimer.timeLeft;
     this.totalTime = currentTimer.totalTime;
     this.svgCircleElt.style.strokeDasharray = this.circleCircumference;
     this.svgCircleElt.style.strokeDashoffset = this.getStrokeDashOffset();
+    console.log("this.timeLeft", this.timeLeft);
     this.displayTimeLeft();
   }
 
   function displayTimeLeft() {
     this.countDownElt.innerHTML = millisecondsToClockTime(this.timeLeft);
+    console.log("BEING DISPLAYED: ", millisecondsToClockTime(this.timeLeft));
   }
 
   function tick() {
@@ -155,7 +169,7 @@ function Timer(rootId) {
     }
   }
 
-  function click() {
+  function clickPlay() {
     console.log("CLICK", this);
     if (this.status === this.statuses.COUNTING) {
       this.pause();
