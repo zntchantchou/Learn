@@ -5,8 +5,8 @@
   right: 3rem;
   width: 5rem;
   height: 5rem;
-  font-family: Cambria;
-  color: #ededed;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif !important;
+  color: #e4e4e4;
   background-color: rgb(222, 91, 91);
   border-radius: 50%;
   font-size: 4rem;
@@ -39,7 +39,7 @@
 }
 
 .dialog {
-  font-family:Cambria;
+  font-family: Cambria;
   font-size: 1.5rem;
   background-color: #ffffff;
   width: 25rem;
@@ -51,13 +51,16 @@
   border: dashed 2px darkgray;
 }
 
-.dialog-footer, .dialog-header {
+.dialog-footer,
+.dialog-header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   box-sizing: border-box;
 }
-.dialog-footer, .dialog-header, .dialog-content {
+.dialog-footer,
+.dialog-header,
+.dialog-content {
   padding: 1rem;
 }
 
@@ -68,7 +71,7 @@
 
 /* content is dialog height - header height - footer height */
 .dialog-content {
-  height: calc( 100% - 20% - 4rem );
+  height: calc(100% - 20% - 4rem);
   background-color: bisque;
 }
 
@@ -85,7 +88,7 @@
 #name-editor input {
   text-decoration: none;
   height: 2rem;
-  width : 80%;
+  width: 80%;
 }
 
 #name-editor {
@@ -97,36 +100,35 @@
 }
 
 .editor-time {
-	display: flex;
-	height: 5rem;
+  display: flex;
+  height: 5rem;
 }
 
 .editor-controls {
-	height: 3.5rem;
-	display: flex;
-	flex-wrap: nowrap;
+  height: 3.5rem;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .editor-control {
-  background-image: url('../svg/chevron.svg');
+  background-image: url("../../svg/chevron.svg");
   background-position: center;
   background-size: 3rem;
   background-repeat: no-repeat;
-	width: 33%;
-	font-size: 3rem;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
+  width: 33%;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
-
 .decrement {
-	transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 
 .editor-digits {
-	height: 100%;
-	width: 33%;
-	border: dashed 1px grey;
+  height: 100%;
+  width: 33%;
+  border: dashed 1px grey;
 }

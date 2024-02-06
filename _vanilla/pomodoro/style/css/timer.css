@@ -1,7 +1,4 @@
-@font-face {
-  font-family: "Digi";
-  src: url("./fonts/digital/DIGI.TTF");
-}
+@import "./fonts.css";
 
 #root {
   overflow: hidden;
@@ -102,7 +99,7 @@
 }
 
 #reset-btn {
-  background: url("../svg/restart.svg");
+  background: url("../../svg/restart.svg");
   background-color: rgb(186, 73, 73);
   background-position: center;
   background-size: 2rem;

@@ -4,7 +4,7 @@ function CreateButton() {
   this.draw = draw;
   this.listen = listen;
   // methods can be defined as arrow functions
-  this.handleClickCreate = handleClickCreate.bind(this);
+  this.handleClick = handleClick.bind(this);
   this.handleClickAway = handleClickAway.bind(this);
   this.getOverlayElement = getOverlayElement;
 
@@ -13,29 +13,37 @@ function CreateButton() {
   }
 
   function listen() {
-    this.element.addEventListener("click", this.handleClickCreate);
-    this.getOverlayElement().addEventListener("click", this.handleClickAway);
+    this.element.addEventListener("click", this.handleClick);
+    this.getOverlayElement().addEventListener(
+      "mousedown",
+      this.handleClickAway
+    );
   }
 
   function draw() {
     console.log("CreateBtn [DRAW]");
     this.element = document.createElement("div");
     this.element.id = "create-btn";
-    this.element.textContent = "+";
+    const spanElt = document.createElement("span");
+    spanElt.textContent = "+";
+    this.element.appendChild(spanElt);
     this.anchorElt.appendChild(this.element);
     this.listen();
   }
 
-  function handleClickCreate(e) {
-    console.log("[handleClickCreate]", this.getOverlayElement());
+  function handleClick(e) {
+    console.log("CreateBtn [handleClick]", this.getOverlayElement());
     e.preventDefault();
     this.getOverlayElement().style.visibility = "visible";
   }
 
+  /**
+   * handles clicks on the overlay element
+   * @param {MouseEvent} e
+   */
   function handleClickAway(e) {
     console.log("[handleClickAway]");
     let overlayElt = this.getOverlayElement();
-    e.preventDefault();
     if (overlayElt?.id == e.target.id) {
       overlayElt.style.visibility = "hidden";
     }

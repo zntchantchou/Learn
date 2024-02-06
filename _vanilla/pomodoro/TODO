@@ -24,6 +24,7 @@ Timer Interactions:
   
 Misc: 
   ☐ Handle svg not displayed in safari
+  ☐ Add images instead of all types of characters inside buttons
     
   Done: 
     ✔ Store timer's current time in ms each second @done(24-02-03 18:40)
