@@ -3,13 +3,18 @@ function CreateButton() {
   this.element;
   this.draw = draw;
   this.listen = listen;
+  // methods can be defined as arrow functions
   this.handleClickCreate = handleClickCreate.bind(this);
   this.handleClickAway = handleClickAway.bind(this);
-  const overlayElt = document.getElementById("overlay");
+  this.getOverlayElement = getOverlayElement;
+
+  function getOverlayElement() {
+    return document.getElementById("overlay");
+  }
 
   function listen() {
     this.element.addEventListener("click", this.handleClickCreate);
-    overlayElt.addEventListener("click", this.handleClickAway);
+    this.getOverlayElement().addEventListener("click", this.handleClickAway);
   }
 
   function draw() {
@@ -17,21 +22,23 @@ function CreateButton() {
     this.element = document.createElement("div");
     this.element.id = "create-btn";
     this.element.textContent = "+";
-    // arrow function can be used as well
     this.anchorElt.appendChild(this.element);
     this.listen();
   }
 
   function handleClickCreate(e) {
-    console.log("[handleClickCreate]", overlayElt);
+    console.log("[handleClickCreate]", this.getOverlayElement());
     e.preventDefault();
-    overlayElt.style.visibility = "visible";
+    this.getOverlayElement().style.visibility = "visible";
   }
 
   function handleClickAway(e) {
-    console.log("[handleClickAway]", overlayElt, e);
+    console.log("[handleClickAway]");
+    let overlayElt = this.getOverlayElement();
     e.preventDefault();
-    overlayElt.style.visibility = "hidden";
+    if (overlayElt?.id == e.target.id) {
+      overlayElt.style.visibility = "hidden";
+    }
   }
 }
 
