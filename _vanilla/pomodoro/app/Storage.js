@@ -1,4 +1,4 @@
-const DEFAULT_TIME_MS = 60000;
+const DEFAULT_TIME_MS = 6000000;
 
 export const DEFAULT_TIMER = {
   totalTime: DEFAULT_TIME_MS,
@@ -14,10 +14,14 @@ function Storage() {
   this.get = get;
   // constructor behaviour
   this.initialize();
+
   function get(key) {
+    console.log('key ', key)
     const value = localStorage.getItem(key);
+    console.log('VALUE ', JSON.stringify(value));
+    console.log('Typescript ', key)
     return value ? JSON.parse(value) : null;
-  }
+  } 
 
   function getCurrentTimer() {
     return this.get("current");

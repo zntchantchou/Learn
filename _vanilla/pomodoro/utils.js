@@ -1,11 +1,16 @@
-export const millisecondsToMinsAndSecs = (milliseconds) => {
-  let minutes = milliseconds / 60000;
-  const minutesRounded = Math.floor(minutes);
+export const millisecondsToClockTime = (milliseconds) => {
+  const hourInMilliseconds = 3600000;
+  let hours = Math.floor(milliseconds / hourInMilliseconds);
+  let millisecondsElapsed = hours > 0 ? hours * hourInMilliseconds : 0;
+  let minutes = Math.floor(milliseconds - millisecondsElapsed) / 60000;
   const seconds = minutes - Math.floor(minutes);
+  minutes = Math.floor(minutes)
   let secondsInSexagecimal = seconds * 0.6;
   secondsInSexagecimal = (secondsInSexagecimal * 100).toFixed(0);
-  return zeroPadTime(minutesRounded) + ":" + zeroPadTime(secondsInSexagecimal);
+  return zeroPadTime(hours) + ":" +  zeroPadTime(minutes.toFixed(0)) + ":" + zeroPadTime(secondsInSexagecimal);
 };
+
+
 
 function zeroPadTime(time) {
   let prefix = Number(time) < 10 ? "0" : "";

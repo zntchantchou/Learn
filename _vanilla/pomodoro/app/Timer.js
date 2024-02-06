@@ -1,6 +1,6 @@
 import Storage from "./Storage.js";
 import { addIdToElements } from "../utils.js";
-import { millisecondsToMinsAndSecs } from "../utils.js";
+import { millisecondsToClockTime } from "../utils.js";
 
 function Timer(rootId) {
   this.statuses = Object.freeze({
@@ -141,7 +141,7 @@ function Timer(rootId) {
   }
 
   function displayTimeLeft() {
-    this.countDownElt.innerHTML = millisecondsToMinsAndSecs(this.timeLeft);
+    this.countDownElt.innerHTML = millisecondsToClockTime(this.timeLeft);
   }
 
   function tick() {

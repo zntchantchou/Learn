@@ -2,38 +2,42 @@ Persistence:
   ☐ Find good model for timers in localStorage @started(24-02-03 18:40)
 
 Timer: 
-  ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
   ☐ Clicking the timer should open an edit Popup
+  ☐ Add input for name in edit mode
+  ☐ Display task name in normal mode 
+  ☐ Add delete btn on each timer
   ☐ Implement restart btn
   ☐ Add an edit btn on each timer
-  ☐ Add delete btn on each timer  
-  ☐ Add input for name in edit mode 
-  ☐ Display task name in normal mode 
+  ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
 
 Timer Interactions:
  ☐ Starting one timer should pause the current Timer
  ☐ Started timer should become main timer
  ☐ Previous timer should go to first position in stored timers list
- ☐ Add a floating tab to create a new timer 
- ☐ Add an editMode overlay
-
-User Input :
+ ☐ Add a floating tab to create a new timer @started(24-02-06 14:37)
+ 
+ User Input :
   ☐ Add arrows above and below minutes and seconds to update them
   ☐ handle keypressed numbers 
   ☐ handle up and down arrows 
   ☐ handle mousewheel 
-
+  
 Misc: 
   ☐ Handle svg not displayed in safari
-      
-Done: 
-  ✔ Store timer's current time in ms each second @done(24-02-03 18:40)
-  ✔ Initialize time from localStorage @done(24-02-03 18:40)
-  ✔ sync timer and circle @started(24-01-28 22:37) @done(24-01-28 23:12) @lasted(35m1s)
-  ✔ Initialize hardcoded time @done(24-01-29 11:09)
-  ✔ Add svg circle @done(24-01-28 21:10)
-  ✔ place countdown time in the center of svg @started(24-01-28 22:30) @done(24-01-29 11:09) @lasted(12h39m38s)
-  ✔ Correct Pause (bug) @done(24-02-02 13:19)
-  ✔ implement reset @started(24-01-29 11:09) @done(24-02-02 13:28) @lasted(4d2h19m55s)
-  ✔ Move to its own object (class) @done(24-02-03 18:40)
+    
+  Done: 
+    ✔ Store timer's current time in ms each second @done(24-02-03 18:40)
+    ✔ Initialize time from localStorage @done(24-02-03 18:40)
+    ✔ sync timer and circle @started(24-01-28 22:37) @done(24-01-28 23:12) @lasted(35m1s)
+    ✔ Initialize hardcoded time @done(24-01-29 11:09)
+    ✔ Add svg circle @done(24-01-28 21:10)
+    ✔ place countdown time in the center of svg @started(24-01-28 22:30) @done(24-01-29 11:09) @lasted(12h39m38s)
+    ✔ Correct Pause (bug) @done(24-02-02 13:19)
+    ✔ implement reset @started(24-01-29 11:09) @done(24-02-02 13:28) @lasted(4d2h19m55s)
+    ✔ Move to its own object (class) @done(24-02-03 18:40)
+    ✔ Add an editMode overlay @started(24-02-06 14:37) @done(24-02-06 14:37) @lasted(39s)
 
+
+  Time-editor :
+
+    

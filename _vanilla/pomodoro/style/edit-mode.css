@@ -13,7 +13,6 @@
   font-weight: 900;
   cursor: pointer;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 
@@ -25,13 +24,51 @@
 }
 
 #overlay {
-  background-color: rgb(167, 167, 167);
+  box-sizing: content-box;
+  background-color: rgba(145, 145, 145, 0.877);
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   z-index: 1;
-  opacity: 0.8;
   visibility: hidden;
+}
+
+.dialog {
+  font-family:Cambria;
+  font-size: 1.5rem;
+  background-color: #ffffff;
+  width: 25rem;
+  height: 30rem;
+  opacity: 1;
+}
+
+.dialog-footer, .dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+.dialog-footer, .dialog-header, .dialog-content {
+  padding: 1rem;
+}
+
+.dialog-header {
+  background-color: salmon;
+  height: 20%;
+}
+
+/* content is dialog height - header height - footer height */
+.dialog-content {
+  height: calc( 100% - 20% - 4rem );
+  background-color: bisque;
+}
+
+.dialog-footer {
+  background-color: aqua;
+  height: 4rem;
 }
