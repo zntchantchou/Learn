@@ -1,3 +1,5 @@
+import TimerModal from "./TimerModal.js";
+
 function CreateButton() {
   this.anchorElt = document.getElementById("root");
   this.element;
@@ -7,6 +9,7 @@ function CreateButton() {
   this.handleClick = handleClick.bind(this);
   this.handleClickAway = handleClickAway.bind(this);
   this.getOverlayElement = getOverlayElement;
+  this.modal = new TimerModal();
 
   function getOverlayElement() {
     return document.getElementById("overlay");
@@ -35,6 +38,7 @@ function CreateButton() {
     console.log("CreateBtn [handleClick]", this.getOverlayElement());
     e.preventDefault();
     this.getOverlayElement().style.visibility = "visible";
+    this.modal.draw();
   }
 
   /**
@@ -45,6 +49,7 @@ function CreateButton() {
     console.log("[handleClickAway]");
     let overlayElt = this.getOverlayElement();
     if (overlayElt?.id == e.target.id) {
+      this.modal.remove();
       overlayElt.style.visibility = "hidden";
     }
   }

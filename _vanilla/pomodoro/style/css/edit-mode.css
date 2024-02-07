@@ -1,3 +1,5 @@
+@import "./fonts.css";
+
 #create-btn {
   z-index: 2;
   position: absolute;
@@ -38,46 +40,60 @@
   visibility: hidden;
 }
 
-.dialog {
+.timer-modal {
   font-family: Cambria;
   font-size: 1.5rem;
-  background-color: #ffffff;
   width: 25rem;
   height: 30rem;
   opacity: 1;
+  color: #fff;
+  background-color: #fff;
 }
 
-.dialog > * {
-  border: dashed 2px darkgray;
+.timer-modal-header {
+  color: rgb(186, 73, 73);
+  background-color: #fff;
+  font-weight: bolder;
 }
-
-.dialog-footer,
-.dialog-header {
+.timer-modal-footer,
+.timer-modal-header {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
   display: flex;
   align-items: center;
   justify-content: flex-start;
   box-sizing: border-box;
-}
-.dialog-footer,
-.dialog-header,
-.dialog-content {
-  padding: 1rem;
-}
-
-.dialog-header {
-  background-color: salmon;
   height: 20%;
 }
 
-/* content is dialog height - header height - footer height */
-.dialog-content {
-  height: calc(100% - 20% - 4rem);
-  background-color: bisque;
+.timer-modal-footer,
+.timer-modal-header,
+.timer-modal-content {
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
-.dialog-footer {
-  background-color: aqua;
-  height: 4rem;
+/* content is dialog height - header height - footer height */
+.timer-modal-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: calc(100% - 20% - 20%);
+}
+
+.timer-modal-footer {
+  height: 20%;
+}
+
+#editor-hours,
+#editor-minutes,
+#editor-seconds,
+.editor-colon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
 }
 
 .editor-colon {
@@ -85,32 +101,37 @@
   display: flex;
   font-size: 3rem;
   width: 1rem;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  background-color: rgb(186, 73, 73);
 }
 
-.time-editor {
-  width: 100%;
-  height: 75%;
-}
-
-#name-editor input {
+.name-editor input {
   text-decoration: none;
-  height: 2rem;
-  width: 80%;
+  height: 2.3rem;
+  width: 100%;
+  padding-left: 0.5rem;
+  outline: none;
+  border: none;
+  font-size: 1.1rem;
+  color: gray;
 }
 
-#name-editor {
+.name-editor {
   display: flex;
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 25%;
+  height: 20%;
 }
-
-.editor-time {
+.time-editor {
+  width: 60%;
+}
+#editor-time-display {
   display: flex;
   height: 5rem;
+  font-family: Digi;
+  font-size: 2rem;
 }
 
 .editor-controls {
@@ -138,6 +159,9 @@
 
 .editor-digits {
   height: 100%;
+  background-color: rgb(186, 73, 73);
+  border: none;
+  font-size: 2.5rem;
   width: 33%;
-  border: dashed 1px grey;
+  font-weight: bolder;
 }

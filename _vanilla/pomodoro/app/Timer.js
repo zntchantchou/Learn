@@ -1,6 +1,6 @@
 import Storage from "./Storage.js";
-import { addIdToElements } from "../utils.js";
-import { millisecondsToClockTime } from "../utils.js";
+import { addIdToElements } from "./utils.js";
+import { millisecondsToClockTime } from "./utils.js";
 
 function Timer(rootId) {
   this.statuses = Object.freeze({

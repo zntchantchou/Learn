@@ -16,7 +16,7 @@ export const millisecondsToClockTime = (milliseconds) => {
   );
 };
 
-function zeroPadTime(time) {
+export function zeroPadTime(time) {
   let prefix = Number(time) < 10 ? "0" : "";
   return prefix + String(time);
 }
@@ -43,10 +43,12 @@ export function addIdToElements(elements, ids) {
  * @param {Object} [options] configuration of the html attributes
  * @param {Array<string>} options.classes css classes to be added to the element
  * @param {string} options.id css id  to be added to the element
+ * @param {string} options.text text to be injected into the element
  * @returns {HTMLElement}
  */
 export function createElement(type, options = {}) {
   const element = document.createElement(type);
+  if (!options) return element;
   if (options && options.classes && Array.isArray(options.classes)) {
     options.classes.forEach((c) => {
       element.classList.add(c);
@@ -54,6 +56,10 @@ export function createElement(type, options = {}) {
   }
   if (options.id) {
     element.id = options.id;
+  }
+
+  if (options.text) {
+    element.textContent = options.text;
   }
   return element;
 }
@@ -64,10 +70,18 @@ export function createElement(type, options = {}) {
  * @param {number} numberOfCopies how many copies of the element you want
  * @param {Object} [options] Options for the html attributes of all created elements
  * @param {Array<string>} options.classes css classes to be added to all elements
+ * @param {string} options.text text to be injected into the element
  * @returns {Array<HTMLElement>}
  */
 export function createElements(type, numberOfCopies = 2, options = {}) {
   return Array(numberOfCopies)
     .fill(null)
     .map((_) => createElement(type, options));
+}
+
+export function incrementUpTo(value, ceiling) {
+  if (value < ceiling) {
+    return value + 1;
+  }
+  return 0;
 }
