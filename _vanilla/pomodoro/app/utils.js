@@ -85,3 +85,13 @@ export function incrementUpTo(value, ceiling) {
   }
   return 0;
 }
+
+
+export function decrementFrom(value, ceiling) {
+  if (value > 0) {
+    console.log('value', value);
+    return value - 1;
+  }
+  return ceiling;
+}
+

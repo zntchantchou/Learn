@@ -1,6 +1,7 @@
 import {
   createElement,
   createElements,
+  decrementFrom,
   incrementUpTo,
   zeroPadTime,
 } from "./utils.js";
@@ -55,14 +56,17 @@ export default function TimerModal() {
     this.hoursElt = createElement("div", {
       classes: ["editor-digits"],
       id: "editor-hours",
+      text: zeroPadTime(this.currentTime.hours)
     });
     this.minutesElt = createElement("div", {
       classes: ["editor-digits"],
       id: "editor-minutes",
+      text: zeroPadTime(this.currentTime.minutes)
     });
     this.secondsElt = createElement("div", {
       classes: ["editor-digits"],
       id: "editor-seconds",
+      text: zeroPadTime(this.currentTime.seconds)
     });
     const colonElements = createElements("div", 2, {
       classes: ["editor-colon"],
@@ -131,13 +135,19 @@ export default function TimerModal() {
 
   function decrementSeconds(e) {
     console.log("decrementSeconds", e);
+    this.currentTime.seconds = decrementFrom(this.currentTime.seconds, 59)
+    this.secondsElt.innerHTML = zeroPadTime(this.currentTime.seconds);
   }
 
   function decrementMinutes(e) {
     console.log("decrementMinutes", e);
+    this.currentTime.minutes = decrementFrom(this.currentTime.minutes, 59)
+    this.minutesElt.innerHTML = zeroPadTime(this.currentTime.minutes);
   }
 
   function decrementHours(e) {
+    this.currentTime.hours = decrementFrom(this.currentTime.hours, 24)
+    this.hoursElt.innerHTML = zeroPadTime(this.currentTime.hours);
     console.log("decrementHours", e);
   }
 

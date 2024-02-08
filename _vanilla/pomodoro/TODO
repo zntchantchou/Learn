@@ -1,42 +1,43 @@
 Persistence: 
   ☐ Find good model for timers in localStorage @started(24-02-03 18:40)
 
+Timer-editor: 
+  ☐ Add save btn
+  ☐ close modal btn
+
 Timer: 
-  ☐ Add input for name in edit mode
   ☐ Display task name in normal mode 
   ☐ Add delete btn on each timer
   ☐ Add an edit btn on each timer
   ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
 
-  Timer Interactions:
-    ☐ Starting one timer should pause the current Timer
-    ☐ Started timer should become main timer
-    ☐ Previous timer should go to first position in stored timers list
-    ☐ Add a floating tab to create a new timer @started(24-02-06 14:37)
-
-  User Input :
-    ☐ Add arrows above and below minutes and seconds to update them
-    ☐ handle keypressed numbers 
-    ☐ handle up and down arrows 
-    ☐ handle mousewheel 
-    
-  Misc: 
-    ☐ Handle svg not displayed in safari
-    ☐ Add images instead of all types of characters inside buttons
+Timer Interactions:
   
-  Done: 
-    ✔ Store timer's current time in ms each second @done(24-02-03 18:40)
-    ✔ Initialize time from localStorage @done(24-02-03 18:40)
-    ✔ sync timer and circle @started(24-01-28 22:37) @done(24-01-28 23:12) @lasted(35m1s)
-    ✔ Initialize hardcoded time @done(24-01-29 11:09)
-    ✔ Add svg circle @done(24-01-28 21:10)
-    ✔ place countdown time in the center of svg @started(24-01-28 22:30) @done(24-01-29 11:09) @lasted(12h39m38s)
-    ✔ Correct Pause (bug) @done(24-02-02 13:19)
-    ✔ implement reset @started(24-01-29 11:09) @done(24-02-02 13:28) @lasted(4d2h19m55s)
-    ✔ Move to its own object (class) @done(24-02-03 18:40)
-    ✔ Add an editMode overlay @started(24-02-06 14:37) @done(24-02-06 14:37) @lasted(39s)
-    ✔ Implement restart btn @started(24-02-06 19:12) @done(24-02-06 20:08) @lasted(56m35s)
-    ✔ Clicking the timer should open an edit Popup @done(24-02-06 20:08)
+  ☐ Starting one timer should pause the current Timer
+  ☐ Add a floating tab to create a new timer @started(24-02-06 14:37)
+  
+User Input :
+  ☐ Add arrows above and below minutes and seconds to update them
+  ☐ handle keypressed numbers 
+  ☐ handle up and down arrows 
+  ☐ handle mousewheel 
+  
+Misc: 
+  ☐ Handle svg not displayed in safari
+  ☐ Add images instead of all types of characters inside buttons
     
-Time-editor :
-
+Done: 
+  ✔ Add input for name in edit mode @done(24-02-08 12:11)
+  ✔ Store timer's current time in ms each second @done(24-02-03 18:40)
+  ✔ Initialize time from localStorage @done(24-02-03 18:40)
+  ✔ sync timer and circle @started(24-01-28 22:37) @done(24-01-28 23:12) @lasted(35m1s)
+  ✔ Initialize hardcoded time @done(24-01-29 11:09)
+  ✔ Add svg circle @done(24-01-28 21:10)
+  ✔ place countdown time in the center of svg @started(24-01-28 22:30) @done(24-01-29 11:09) @lasted(12h39m38s)
+  ✔ Correct Pause (bug) @done(24-02-02 13:19)
+  ✔ implement reset @started(24-01-29 11:09) @done(24-02-02 13:28) @lasted(4d2h19m55s)
+  ✔ Move to its own object (class) @done(24-02-03 18:40)
+  ✔ Add an editMode overlay @started(24-02-06 14:37) @done(24-02-06 14:37) @lasted(39s)
+  ✔ Implement restart btn @started(24-02-06 19:12) @done(24-02-06 20:08) @lasted(56m35s)
+  ✔ Clicking the timer should open an edit Popup @done(24-02-06 20:08)
+    
