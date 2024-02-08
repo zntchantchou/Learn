@@ -1,27 +1,28 @@
+import Timer from "./Timer.js";
+
 const DEFAULT_TIME_MS = 200000;
 
 export const DEFAULT_TIMER = {
-  totalTime: DEFAULT_TIME_MS,
-  timeLeft: DEFAULT_TIME_MS,
   name: "Default",
+  totalTime: DEFAULT_TIME_MS,
+  timeStamps: [],
 };
 
 function Storage() {
   this.updateCurrentTimer = updateCurrentTimer;
   this.getCurrentTimer = getCurrentTimer;
-  this.initialize = initialize;
   this.getStoredTimers = getStoredTimers;
   this.get = get;
+  this.addTimeStamp = addTimeStamp;
   // constructor behaviour
-  this.initialize();
 
   function get(key) {
-    console.log('key ', key)
+    console.log("key ", key);
     const value = localStorage.getItem(key);
-    console.log('VALUE ', JSON.stringify(value));
-    console.log('Typescript ', key)
+    console.log("VALUE ", JSON.stringify(value));
+    console.log("Typescript ", key);
     return value ? JSON.parse(value) : null;
-  } 
+  }
 
   function getCurrentTimer() {
     return this.get("default");
@@ -30,15 +31,6 @@ function Storage() {
     return this.get("stored");
   }
 
-  function initialize() {
-    if (!this.getCurrentTimer()) {
-      const { timeLeft, totalTime } = DEFAULT_TIMER;
-      updateCurrentTimer({
-        totalTime: Math.round(totalTime / 1000) * 1000,
-        timeLeft: Math.round(timeLeft / 1000) * 1000,
-      });
-    }
-  }
 
   function updateCurrentTimer(timerData) {
     const existingData = this ? this.getCurrentTimer() : DEFAULT_TIMER;
@@ -46,6 +38,28 @@ function Storage() {
       "default",
       JSON.stringify({ ...existingData, ...timerData })
     );
+  }
+
+  function addTimeStamp(timer) {
+    if (!timer instanceof Timer) {
+      throw Error(
+        "Must provide Storage.addTimeStamp with an instance of a Timer"
+      );
+    }
+    const stored = localStorage.getItem(timer.name);
+    console.log('timer.name', timer.name)
+    if (!stored) {
+      localStorage.setItem(
+        timer.name,
+        JSON.stringify({
+          timeStamps: [new Date().toISOString()],
+          totalTime: timer.totalTime,
+        })
+      );
+      return;
+    }
+
+    return localStorage.setItem(timer.name, JSON.stringify({}));
   }
 }
 

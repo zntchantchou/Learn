@@ -1,3 +1,4 @@
+// import Storage from "./Storage.js";
 import Storage from "./Storage.js";
 import { addIdToElements } from "./utils.js";
 import { millisecondsToClockTime } from "./utils.js";
@@ -11,16 +12,13 @@ function Timer(rootId) {
   this.name = "Default";
   this.status = this.statuses.STOPPED;
   this.timeLeft = this.totalTime;
+  this.totalTime = 60000
   this.intervalId;
   // METHODS
   this.draw = draw;
-  this.displayTimeLeft = displayTimeLeft;
-  this.clickPlay = clickPlay;
   this.start = start;
-  this.tick = tick;
-  this.pause = pause;
-  this.stop = stop;
-  this.syncWithStorage = syncWithStorage;
+  this.displayTimeLeft = displayTimeLeft;
+  // this.clickPlay = clickPlay;
   this.setStatus = setStatus;
   this.getStrokeDashOffset = getStrokeDashOffset;
   this.totalSeconds = totalSeconds;
@@ -34,6 +32,12 @@ function Timer(rootId) {
   this.toggleBtn = toggleBtn;
   this.countDownElt;
   this.svgCircleElt;
+
+
+  function start() {
+    console.log("START");
+    Storage.addTimeStamp(this);
+  }
 
   function draw() {
     if (!this.anchorElt) throw new Error("Invalid anchor provided: ", rootId);
@@ -63,8 +67,8 @@ function Timer(rootId) {
     controlsElt.appendChild(restartBtn);
 
     this.startBtnElt = startPauseBtn;
-    restartBtn.addEventListener("click", () => this.stop());
-    this.startBtnElt.addEventListener("click", () => this.clickPlay());
+    // restartBtn.addEventListener("click", () => this.stop());
+    this.startBtnElt.addEventListener("click", () => this.start());
     countDownContainerElt.innerHTML = `
     <svg viewBox="0 0 100 100">
     <circle cx="50" cy="50" r="45" transform="rotate(-90, 50, 50)" id="circle-progress">
@@ -77,39 +81,18 @@ function Timer(rootId) {
     timerElt.appendChild(countDownContainerElt);
     timerElt.appendChild(controlsElt);
     this.anchorElt.appendChild(timerElt);
-    this.syncWithStorage();
+    // this.syncWithStorage();
   }
 
   function setStatus(status) {
     this.status = status;
   }
 
-  function start() {
-    console.log("[START]");
-    this.intervalId = setInterval(() => {
-      this.tick();
-    }, 1000);
-    this.setStatus(this.statuses.COUNTING);
-    this.toggleBtn();
-  }
 
-  function pause() {
-    console.log("[PAUSE]", this.statuses);
-    clearInterval(this.intervalId);
-    this.status = this.statuses.PAUSED;
-    this.toggleBtn();
-  }
 
-  function stop() {
-    console.log("[STOP]", this.statuses);
-    clearInterval(this.intervalId);
-    this.status = this.statuses.STOPPED;
-    this.toggleBtn();
-    this.timeLeft = this.totalTime;
-    Storage.updateCurrentTimer({ timeLeft: this.timeLeft });
-    this.svgCircleElt.style.strokeDashoffset = this.getStrokeDashOffset();
-    this.displayTimeLeft();
-  }
+
+
+
 
   function getStrokeDashOffset() {
     if (!(this.totalSeconds() && this.timeElapsedInSeconds())) return 0;
@@ -141,41 +124,9 @@ function Timer(rootId) {
     return this.totalTime ? this.totalTime / 1000 : 0;
   }
 
-  function syncWithStorage() {
-    console.log("[RESET]");
-    this.status = this.statuses.STOPPED;
-    let currentTimer = Storage.getCurrentTimer() || DEFAULT_TIMER;
-    this.timeLeft = currentTimer.timeLeft;
-    this.totalTime = currentTimer.totalTime;
-    this.svgCircleElt.style.strokeDasharray = this.circleCircumference;
-    this.svgCircleElt.style.strokeDashoffset = this.getStrokeDashOffset();
-    console.log("this.timeLeft", this.timeLeft);
-    this.displayTimeLeft();
-  }
-
   function displayTimeLeft() {
     this.countDownElt.innerHTML = millisecondsToClockTime(this.timeLeft);
     console.log("BEING DISPLAYED: ", millisecondsToClockTime(this.timeLeft));
-  }
-
-  function tick() {
-    console.log("[TICK]", this);
-    this.timeLeft -= 1000;
-    this.svgCircleElt.style.strokeDashoffset = this.getStrokeDashOffset();
-    Storage.updateCurrentTimer({ timeLeft: this.timeLeft });
-    this.displayTimeLeft();
-    if (this.timeLeft < 1000) {
-      return this.stop();
-    }
-  }
-
-  function clickPlay() {
-    console.log("CLICK", this);
-    if (this.status === this.statuses.COUNTING) {
-      this.pause();
-    } else {
-      this.start();
-    }
   }
 
   function toggleBtn() {

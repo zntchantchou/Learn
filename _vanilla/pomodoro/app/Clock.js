@@ -20,4 +20,12 @@ function Clock() {
 }
 
 
+/**
+ When play or pause happen in a timer : 
+  - push currentTime into the said timer 
+  - Clock should have a method calculateElapsedTime used for started timers
+  -  
+ */
+
+
 export default new Clock();
