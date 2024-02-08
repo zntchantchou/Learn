@@ -27,7 +27,7 @@
 
 #overlay {
   box-sizing: content-box;
-  background-color: rgba(145, 145, 145, 0.877);
+  background-color: rgba(180, 180, 180, 0.919);
   position: absolute;
   display: flex;
   align-items: center;
@@ -47,12 +47,11 @@
   height: 30rem;
   opacity: 1;
   color: #fff;
-  background-color: #fff;
+  background-color: rgb(223, 223, 223);
 }
 
 .timer-modal-header {
   color: rgb(186, 73, 73);
-  background-color: #fff;
   font-weight: bolder;
 }
 .timer-modal-footer,
@@ -84,6 +83,8 @@
 
 .timer-modal-footer {
   height: 20%;
+  display:flex;
+  justify-content: center;
 }
 
 #editor-hours,
@@ -161,7 +162,34 @@
   height: 100%;
   background-color: rgb(186, 73, 73);
   border: none;
-  font-size: 2.5rem;
   width: 33%;
+  font-size: 2.5rem;
   font-weight: bolder;
 }
+
+
+.editor-btn {
+  font-size: 1rem;
+  height: 70%;
+  min-width: 7rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.4rem;
+  margin-left: 1rem;
+  cursor: pointer;
+}
+
+.editor-save-btn {
+  background-color: rgb(186, 73, 73);
+}
+.editor-save-btn:hover {
+  background-color: rgba(186, 73, 73, 0.834);
+}
+.editor-cancel-btn {
+  background-color: rgb(113, 113, 113)
+}
+.editor-cancel-btn:hover {
+  background-color: rgba(113, 113, 113, 0.718)
+}
+

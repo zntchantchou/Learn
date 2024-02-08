@@ -13,6 +13,10 @@ export default function TimerModal() {
   this.decrementSeconds = decrementSeconds.bind(this);
   this.decrementMinutes = decrementMinutes.bind(this);
   this.decrementHours = decrementHours.bind(this);
+  this.onNameChange = onNameChange.bind(this);
+  this.getInputElt = getInputElt;
+  this.save = save.bind(this);
+  this.close = close;
   this.currentTime = {
     hours: 0,
     minutes: 0,
@@ -28,6 +32,7 @@ export default function TimerModal() {
   this.bootStrap = bootStrap;
   this.remove = remove;
   this.bootStrap();
+  this.timerName = "";
 
   function bootStrap() {
     this.element = createElement("div", { classes: ["timer-modal"] });
@@ -36,8 +41,10 @@ export default function TimerModal() {
       text: "NEW TIMER",
     });
     const nameInput = document.createElement("input");
-    nameInput.placeholder = "Choose a name";
+    nameInput.placeholder = "timer name";
     nameInput.type = "text";
+    nameInput.id = "editor-input";
+    console.log("nameInput ", nameInput);
     const nameEditorElt = createElement("div", { classes: ["name-editor"] });
     const timerModalContent = createElement("div", {
       classes: ["timer-modal-content"],
@@ -56,17 +63,17 @@ export default function TimerModal() {
     this.hoursElt = createElement("div", {
       classes: ["editor-digits"],
       id: "editor-hours",
-      text: zeroPadTime(this.currentTime.hours)
+      text: zeroPadTime(this.currentTime.hours),
     });
     this.minutesElt = createElement("div", {
       classes: ["editor-digits"],
       id: "editor-minutes",
-      text: zeroPadTime(this.currentTime.minutes)
+      text: zeroPadTime(this.currentTime.minutes),
     });
     this.secondsElt = createElement("div", {
       classes: ["editor-digits"],
       id: "editor-seconds",
-      text: zeroPadTime(this.currentTime.seconds)
+      text: zeroPadTime(this.currentTime.seconds),
     });
     const colonElements = createElements("div", 2, {
       classes: ["editor-colon"],
@@ -75,6 +82,19 @@ export default function TimerModal() {
     const footerElt = createElement("div", {
       classes: ["timer-modal-footer"],
     });
+
+    const saveBtn = createElement("div", {
+      classes: ["editor-btn", "editor-save-btn"],
+      text: "Save",
+    });
+    saveBtn.addEventListener("click", this.save);
+    const cancelBtn = createElement("div", {
+      classes: ["editor-btn", "editor-cancel-btn"],
+      text: "Cancel",
+    });
+
+    footerElt.appendChild(saveBtn);
+    footerElt.appendChild(cancelBtn);
 
     // HEADER
     this.element.appendChild(timerModalHeaderElt);
@@ -113,6 +133,10 @@ export default function TimerModal() {
   function draw() {
     console.log("Timermodal draw");
     this.anchorElt.appendChild(this.element);
+
+    if (this.getInputElt()) {
+      this.getInputElt().addEventListener("input", this.onNameChange);
+    }
   }
 
   function incrementSeconds(e) {
@@ -135,18 +159,18 @@ export default function TimerModal() {
 
   function decrementSeconds(e) {
     console.log("decrementSeconds", e);
-    this.currentTime.seconds = decrementFrom(this.currentTime.seconds, 59)
+    this.currentTime.seconds = decrementFrom(this.currentTime.seconds, 59);
     this.secondsElt.innerHTML = zeroPadTime(this.currentTime.seconds);
   }
 
   function decrementMinutes(e) {
     console.log("decrementMinutes", e);
-    this.currentTime.minutes = decrementFrom(this.currentTime.minutes, 59)
+    this.currentTime.minutes = decrementFrom(this.currentTime.minutes, 59);
     this.minutesElt.innerHTML = zeroPadTime(this.currentTime.minutes);
   }
 
   function decrementHours(e) {
-    this.currentTime.hours = decrementFrom(this.currentTime.hours, 24)
+    this.currentTime.hours = decrementFrom(this.currentTime.hours, 24);
     this.hoursElt.innerHTML = zeroPadTime(this.currentTime.hours);
     console.log("decrementHours", e);
   }
@@ -154,5 +178,29 @@ export default function TimerModal() {
   function remove() {
     console.log("removing modal");
     this.element.remove();
+  }
+
+  function getInputElt() {
+    return document.getElementById("editor-input");
+  }
+
+  function onNameChange(e) {
+    this.timerName = e.target.value;
+    console.log("timerName ", this.timerName);
+  }
+
+  function save() {
+    if (!this.timerName) {
+      console.log("no value provided ");
+      this.close()
+    } else {
+      console.log('SAVE ELSE');
+    }
+    this.close();
+  }
+
+  function close() {
+    console.log("Timer Modal[close]");
+    this.anchorElt.style.visibility = "hidden";
   }
 }

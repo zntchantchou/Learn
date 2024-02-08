@@ -2,31 +2,38 @@ Persistence:
   ☐ Find good model for timers in localStorage @started(24-02-03 18:40)
 
 Timer-editor: 
-  ☐ Add save btn
-  ☐ close modal btn
+  Timer: 
+    ☐ Add delete btn on each timer
+    ☐ implement deleteTimer
+    ☐ implement createTimer
+    ☐ Freshly created timer should be displayed on 'timers' page
+    ☐ Move event listeners in a separate function
+    CreateTimer: 
+      ☐ Do not allow creation if time is less than one second
+      ☐ Do not allow creation if timer name is empty
+      ☐ Do not allow creation if timer name exists
 
-Timer: 
-  ☐ Display task name in normal mode 
-  ☐ Add delete btn on each timer
-  ☐ Add an edit btn on each timer
-  ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
-
-Timer Interactions:
-  
-  ☐ Starting one timer should pause the current Timer
-  ☐ Add a floating tab to create a new timer @started(24-02-06 14:37)
-  
-User Input :
-  ☐ Add arrows above and below minutes and seconds to update them
-  ☐ handle keypressed numbers 
-  ☐ handle up and down arrows 
-  ☐ handle mousewheel 
-  
-Misc: 
-  ☐ Handle svg not displayed in safari
-  ☐ Add images instead of all types of characters inside buttons
+    ☐ Display task name in normal mode 
+    ☐ Add an edit btn on each timer
+    ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
     
-Done: 
+    Timer Interactions:
+
+    ☐ Starting one timer should pause the current Timer
+    ☐ Add a floating tab to create a new timer @started(24-02-06 14:37)
+
+    User Input :
+    ☐ Add arrows above and below minutes and seconds to update them
+    ☐ handle keypressed numbers 
+    ☐ handle up and down arrows 
+    ☐ handle mousewheel 
+
+    Misc: 
+    ☐ Handle svg not displayed in safari
+    ☐ Add images instead of all types of characters inside buttons
+
+  Done: 
+  ✔ Add save btn @started(24-02-08 13:12) @done(24-02-08 13:24) @lasted(12m48s)
   ✔ Add input for name in edit mode @done(24-02-08 12:11)
   ✔ Store timer's current time in ms each second @done(24-02-03 18:40)
   ✔ Initialize time from localStorage @done(24-02-03 18:40)

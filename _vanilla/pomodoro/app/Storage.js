@@ -24,7 +24,7 @@ function Storage() {
   } 
 
   function getCurrentTimer() {
-    return this.get("current");
+    return this.get("default");
   }
   function getStoredTimers() {
     return this.get("stored");
@@ -43,7 +43,7 @@ function Storage() {
   function updateCurrentTimer(timerData) {
     const existingData = this ? this.getCurrentTimer() : DEFAULT_TIMER;
     localStorage.setItem(
-      "current",
+      "default",
       JSON.stringify({ ...existingData, ...timerData })
     );
   }
