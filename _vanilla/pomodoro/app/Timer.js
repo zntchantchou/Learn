@@ -3,22 +3,26 @@ import Storage from "./Storage.js";
 import { addIdToElements } from "./utils.js";
 import { millisecondsToClockTime } from "./utils.js";
 
-function Timer(rootId) {
+function Timer({ name = "default", totalTime = 60000 }) {
   this.statuses = Object.freeze({
     PAUSED: "PAUSED",
     STOPPED: "STOPPED",
     COUNTING: "COUNTING",
   });
-  this.name = "Default";
+  this.name = name;
   this.status = this.statuses.STOPPED;
   this.timeLeft = this.totalTime;
-  this.totalTime = 60000
+  this.totalTime = totalTime
   this.intervalId;
   // METHODS
   this.draw = draw;
   this.start = start;
   this.displayTimeLeft = displayTimeLeft;
-  // this.clickPlay = clickPlay;
+  this.stop = stop;
+  this.syncWithStorage = syncWithStorage;
+  this.start = start;
+  this.pause = pause;
+
   this.setStatus = setStatus;
   this.getStrokeDashOffset = getStrokeDashOffset;
   this.totalSeconds = totalSeconds;
@@ -28,11 +32,10 @@ function Timer(rootId) {
   this.circleCircumference = 2 * this.circleRadius * Math.PI;
   // DOM
   this.startBtnElt;
-  this.anchorElt = document.getElementById(rootId);
+  this.anchorElt = document.getElementById("main-timer");
   this.toggleBtn = toggleBtn;
   this.countDownElt;
   this.svgCircleElt;
-
 
   function start() {
     console.log("START");
@@ -40,7 +43,7 @@ function Timer(rootId) {
   }
 
   function draw() {
-    if (!this.anchorElt) throw new Error("Invalid anchor provided: ", rootId);
+    if (!this.anchorElt) throw new Error("Invalid anchor provided: ", "main-timer");
     const divs = Array(6)
       .fill(null)
       .map((_) => document.createElement("div"));
@@ -52,7 +55,7 @@ function Timer(rootId) {
       startPauseBtn,
       restartBtn,
     ] = addIdToElements(divs, [
-      rootId == "timers" ? "timer-stored" : "timer",
+      "timer",
       "countdown-ctn",
       "countdown",
       "controls",
@@ -67,7 +70,7 @@ function Timer(rootId) {
     controlsElt.appendChild(restartBtn);
 
     this.startBtnElt = startPauseBtn;
-    // restartBtn.addEventListener("click", () => this.stop());
+    restartBtn.addEventListener("click", () => this.stop());
     this.startBtnElt.addEventListener("click", () => this.start());
     countDownContainerElt.innerHTML = `
     <svg viewBox="0 0 100 100">
@@ -81,18 +84,35 @@ function Timer(rootId) {
     timerElt.appendChild(countDownContainerElt);
     timerElt.appendChild(controlsElt);
     this.anchorElt.appendChild(timerElt);
-    // this.syncWithStorage();
+    this.syncWithStorage();
+  }
+
+  function syncWithStorage() {
+    const {timer, index} = Storage.getTimerByName(this.name);
+    this.totalTime = timer.totalTime;
+    console.log('syncwithStorage ', timer, index);
+    if(!timer?.timeStamps?.length) {
+      this.timeLeft = this.totalTime;
+    }
+    this.displayTimeLeft();
   }
 
   function setStatus(status) {
     this.status = status;
   }
 
+  function stop() {
+    console.log('[stop]')
+  }
 
+  function start() {
+    console.log('[start]');
+    Storage.addTimeStamp(this.name);
+  }
 
-
-
-
+  function pause() {
+    console.log('[pause]')
+  }
 
   function getStrokeDashOffset() {
     if (!(this.totalSeconds() && this.timeElapsedInSeconds())) return 0;
