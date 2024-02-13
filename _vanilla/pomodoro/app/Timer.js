@@ -19,6 +19,7 @@ function Timer({ name = "default", totalTime = 60000 }) {
   this.start = start;
   this.displayTimeLeft = displayTimeLeft;
   this.stop = stop;
+  this.tick = tick;
   this.syncWithStorage = syncWithStorage;
   this.start = start;
   this.pause = pause;
@@ -103,15 +104,25 @@ function Timer({ name = "default", totalTime = 60000 }) {
 
   function stop() {
     console.log('[stop]')
+    clearInterval(this.intervalId);
   }
 
   function start() {
     console.log('[start]');
     Storage.addTimeStamp(this.name);
+    this.intervalId = setInterval(() => {
+      this.tick();
+    }, 1000);
+
+  }
+
+  function tick() {
+    console.log('[tick]', this.timeLeft, this.totalTime);
   }
 
   function pause() {
     console.log('[pause]')
+    clearInterval(this.intervalId);
   }
 
   function getStrokeDashOffset() {

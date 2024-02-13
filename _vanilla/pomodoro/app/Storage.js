@@ -47,20 +47,21 @@ function Storage() {
   }
 
   function deleteTimer(name) {
-    console.log('[DeleteTimer]')
-    const {timer, index} = getTimerByName();
-    if(timer && index > 0) {
+    console.log('[DeleteTimer] name: ', name)
+    const {timer, index} = this.getTimerByName(name);
+    if(timer && index >= 0) {
       let timers = this.getTimers();
       timers.splice(index, 1);
       this.updateTimers(timers);
+      return true;
     }
+    return false;
   }
  
   function setup() {
-    console.log('[SETUp]')
-    if(!localStorage.getItem("timers")) {
-      console.log('[SETUp] No timers')
-      localStorage.setItem("timers", JSON.stringify([DEFAULT_TIMER]));
+    console.log('[SETUP]')
+    if(!localStorage.getItem(TIMERS_KEY)) {
+      localStorage.setItem(TIMERS_KEY, JSON.stringify([DEFAULT_TIMER]));
     }
   }
 
