@@ -12,6 +12,7 @@ export const DEFAULT_TIMER = {
 function Storage() {
   // METHODS
   this.getTimers = getTimers;
+  this.createTimer = createTimer;
   this.getTimerByName = getTimerByName;
   this.get = get;
   this.addTimeStamp = addTimeStamp;
@@ -31,6 +32,27 @@ function Storage() {
 
   function getTimers() {
     return this.get(TIMERS_KEY);
+  }
+
+  /**
+   *
+   * @param {string} name (must be unique)
+   * @param {number} totalTime
+   */
+  function createTimer(name, totalTime) {
+    const timer = { name, totalTime, timeStamps: [] };
+    let timers = this.getTimers();
+    console.log("createTimer timers", timers, typeof timers);
+    if (Array.isArray(timers)) {
+      timers.unshift(timer);
+      console.log("timers unshifted", timers);
+    } else {
+      console.log("timers added", timers);
+      timers = [timer];
+      console.log("timers added", timers);
+    }
+    localStorage.setItem(TIMERS_KEY, JSON.stringify(timers));
+    return;
   }
 
   function clearTimer(name) {
@@ -65,9 +87,6 @@ function Storage() {
 
   function setup() {
     console.log("[SETUP]");
-    if (!localStorage.getItem(TIMERS_KEY)) {
-      localStorage.setItem(TIMERS_KEY, JSON.stringify([DEFAULT_TIMER]));
-    }
   }
 
   function updateTimer(name, data) {
