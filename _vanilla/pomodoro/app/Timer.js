@@ -36,6 +36,7 @@ function Timer({ name = "default", totalTime = 5000 }) {
   this.toggleBtn = toggleBtn;
   this.countDownElt;
   this.svgCircleElt;
+  Storage.createTimer(this.name, this.totalTime);
 
   function start() {
     console.log("START");
@@ -67,7 +68,6 @@ function Timer({ name = "default", totalTime = 5000 }) {
     startPauseBtn.classList.remove("pause-btn");
     startPauseBtn.classList.add("start-btn");
     controlsElt.appendChild(startPauseBtn);
-    console.log("restartBtn ", restartBtn);
     controlsElt.appendChild(restartBtn);
 
     this.startBtnElt = startPauseBtn;
@@ -82,19 +82,27 @@ function Timer({ name = "default", totalTime = 5000 }) {
     countDownContainerElt.appendChild(countDownElt);
     this.countDownElt = countDownElt;
     this.svgCircleElt = countDownContainerElt.children[0];
+    // here use timeleft to calculate strokeDashoffset
     this.svgCircleElt.style.strokeDasharray = this.circleCircumference;
     timerElt.appendChild(countDownContainerElt);
     timerElt.appendChild(controlsElt);
     this.anchorElt.appendChild(timerElt);
+    // move to setup function
     this.syncWithStorage();
   }
+
+  // /**
+  //  * @returns {number} time remaining on Timer in ms
+  //  */
+  // function getRemainingTime() {
+  //   return 0;
+  // }
 
   function syncWithStorage() {
     const { timer, index } = Storage.getTimerByName(this.name);
     this.totalTime = timer.totalTime;
     this.timeLeft = this.totalTime;
     // calculate timeleft from timestamps;
-    console.log("syncwithStorage ", timer, index);
     this.displayTimeLeft();
   }
 
@@ -106,7 +114,6 @@ function Timer({ name = "default", totalTime = 5000 }) {
     console.log("[stop]", this.intervalId);
     this.timeLeft = this.totalTime;
     clearInterval(this.intervalId);
-    console.log("Clear interval", this.intervalId);
     Storage.clearTimer(this.name);
     this.setStatus(this.statuses.STOPPED);
     this.svgCircleElt.style.strokeDashoffset = this.getStrokeDashOffset();
@@ -122,7 +129,7 @@ function Timer({ name = "default", totalTime = 5000 }) {
   }
 
   function pause() {
-    console.log("[pause]");
+    console.log("[pause] ", this.intervalId);
     this.setStatus(this.statuses.PAUSED);
     Storage.addTimeStamp(this.name);
     clearInterval(this.intervalId);
@@ -130,11 +137,9 @@ function Timer({ name = "default", totalTime = 5000 }) {
 
   function tick() {
     if (this.timeLeft <= 1000) {
-      console.log("[TICK] <= 1000");
       this.stop();
       return;
     }
-    console.log("[TICK] > 1000");
     this.timeLeft -= 1000;
     this.svgCircleElt.style.strokeDashoffset = this.getStrokeDashOffset();
     this.displayTimeLeft();
@@ -165,26 +170,24 @@ function Timer({ name = "default", totalTime = 5000 }) {
 
   function displayTimeLeft() {
     this.countDownElt.innerHTML = millisecondsToClockTime(this.timeLeft);
-    console.log(
-      "BEING DISPLAYED: ",
-      this.timeLeft,
-      millisecondsToClockTime(this.timeLeft)
-    );
   }
 
   function toggleBtn() {
     console.log("[toggleBtn]");
+
     if ([this.statuses.STOPPED, this.statuses.PAUSED].includes(this.status)) {
       this.startBtnElt.classList.remove("pause-btn");
       this.startBtnElt.classList.add("start-btn");
       this.startBtnElt.innerHTML = "||";
-      console.log("[toggleBtn] if");
       this.start();
+      Storage.getRemainingTime(this.name);
       return;
     }
     this.startBtnElt.classList.add("pause-btn");
     this.startBtnElt.classList.remove("start-btn");
     this.startBtnElt.innerHTML = play_unicode_char;
+    this.pause();
+    Storage.getRemainingTime(this.name);
     return;
   }
 }

@@ -9,13 +9,18 @@ export default function App() {
   this.draw = draw;
   this.draw();
   function draw() {
-    const createBtn = new CreateButton();
-    createBtn.draw();
+    new CreateButton().draw();
     localStorage.clear();
-    Storage.createTimer("one", 20000);
-    Storage.createTimer("two", 30000);
-    const timers = Storage.getTimers();
-    timers.forEach((t) => new Timer(t).draw());
-    console.log("App timers ", timers);
+    // creates and stores timers
+    new Array(2).fill(null).map(
+      (_, i) =>
+        new Timer({
+          totalTime: (i + 1) * 3000,
+          name: "Timer " + String(i + 1),
+        })
+    );
+    // retrieves and draws timers
+    const storedTimers = Storage.getTimers();
+    storedTimers.forEach((t) => new Timer(t).draw());
   }
 }

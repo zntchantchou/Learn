@@ -16,6 +16,24 @@ export const millisecondsToClockTime = (milliseconds) => {
   );
 };
 
+/**
+ * @param {number} hours
+ * @param {number} minutes
+ * @param {number} seconds
+ * @returns {number} hours * 3600000 + minutes * 60000 + seconds * 1000
+ */
+export function hoursMinutesSecondsToMilliseconds(hours, minutes, seconds) {
+  console.log("HOURS ", hours);
+  console.log("MINUTES ", minutes);
+  console.log("SECONDS ", seconds);
+  return hours * 3600000 + minutes * 60000 + seconds * 1000;
+}
+
+/**
+ *
+ * @param {number | string} time
+ * @returns {string}  zero pads any number < 10
+ */
 export function zeroPadTime(time) {
   let prefix = Number(time) < 10 ? "0" : "";
   return prefix + String(time);
@@ -38,7 +56,6 @@ export function addIdToElements(elements, ids) {
 }
 
 /**
- *
  * @param {string} type type of HTMLElement to be passed to document.createElement()
  * @param {Object} [options] configuration of the html attributes
  * @param {Array<string>} options.classes css classes to be added to the element
@@ -86,12 +103,10 @@ export function incrementUpTo(value, ceiling) {
   return 0;
 }
 
-
 export function decrementFrom(value, ceiling) {
   if (value > 0) {
-    console.log('value', value);
+    console.log("value", value);
     return value - 1;
   }
   return ceiling;
 }
-

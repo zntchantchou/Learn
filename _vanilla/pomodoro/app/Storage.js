@@ -14,6 +14,7 @@ function Storage() {
   this.getTimers = getTimers;
   this.createTimer = createTimer;
   this.getTimerByName = getTimerByName;
+  this.getRemainingTime = getRemainingTime;
   this.get = get;
   this.addTimeStamp = addTimeStamp;
   this.setup = setup;
@@ -42,14 +43,10 @@ function Storage() {
   function createTimer(name, totalTime) {
     const timer = { name, totalTime, timeStamps: [] };
     let timers = this.getTimers();
-    console.log("createTimer timers", timers, typeof timers);
     if (Array.isArray(timers)) {
       timers.unshift(timer);
-      console.log("timers unshifted", timers);
     } else {
-      console.log("timers added", timers);
       timers = [timer];
-      console.log("timers added", timers);
     }
     localStorage.setItem(TIMERS_KEY, JSON.stringify(timers));
     return;
@@ -72,6 +69,42 @@ function Storage() {
     });
     // makes it easier to delete or update later on
     return { timer: timer || null, index: foundAtIndex };
+  }
+
+  /**
+   * Calculates the time remaining on a timer
+   * @param {string} name
+   * @returns PAUSED => the remaining time in MS from the timestamps, RUNNING => 0, STOPPED => totalTime
+   */
+  function getRemainingTime(name) {
+    const timer = this.getTimerByName(name);
+    console.log("getRemainingTime ", name);
+    if (timer) {
+      const { timeStamps, totalTime } = timer.timer;
+      console.log("GetTimeremaining timer: ", timeStamps, totalTime);
+      if (!timeStamps.length) {
+        return totalTime;
+      }
+      if (timeStamps.length % 2 == 0) {
+        console.log("GET TIME REMAINING : PAUSED");
+        const dates = timeStamps.map((t) => new Date(t));
+        const timeElapsedMs = dates.forEach((date, i) => {
+          console.log("PREV", prev);
+          console.log("NEXT", next);
+          console.log("Index", i);
+          if (i > 0 && i % 2 == 0) {
+            console.log("ODD ", i, i % 2);
+            return prev + 2;
+          }
+          console.log("EVEN", i, i % 2, prev, next);
+          return prev;
+        }, 0);
+        console.log("NEW DATES ", dates);
+        console.log("TIME ELAPSED MS ", timeElapsedMs);
+      } else {
+        console.log("GET TIME REMAINING : RUNNING");
+      }
+    }
   }
 
   function deleteTimer(name) {

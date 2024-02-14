@@ -2,9 +2,12 @@ import {
   createElement,
   createElements,
   decrementFrom,
+  hoursMinutesSecondsToMilliseconds,
   incrementUpTo,
   zeroPadTime,
 } from "./utils.js";
+import Timer from "./Timer.js";
+import Storage from "./Storage.js";
 
 export default function TimerModal() {
   this.incrementSeconds = incrementSeconds.bind(this);
@@ -44,7 +47,6 @@ export default function TimerModal() {
     nameInput.placeholder = "timer name";
     nameInput.type = "text";
     nameInput.id = "editor-input";
-    console.log("nameInput ", nameInput);
     const nameEditorElt = createElement("div", { classes: ["name-editor"] });
     const timerModalContent = createElement("div", {
       classes: ["timer-modal-content"],
@@ -107,7 +109,6 @@ export default function TimerModal() {
     // TIME
     [this.incrementHours, this.incrementMinutes, this.incrementSeconds].forEach(
       (fn, i) => {
-        console.log("increment control ", incrementControls[i], fn);
         incrementControls[i].addEventListener("click", fn);
       }
     );
@@ -140,13 +141,13 @@ export default function TimerModal() {
   }
 
   function incrementSeconds(e) {
-    console.log("incrementSeconds", e);
+    console.log("incrementSeconds");
     this.currentTime.seconds = incrementUpTo(this.currentTime.seconds, 59);
     this.secondsElt.innerHTML = zeroPadTime(this.currentTime.seconds);
   }
 
   function incrementMinutes(e) {
-    console.log("incrementMinutes", e);
+    console.log("incrementMinutes");
     this.currentTime.minutes = incrementUpTo(this.currentTime.minutes, 59);
     this.minutesElt.innerHTML = zeroPadTime(this.currentTime.minutes);
   }
@@ -158,13 +159,13 @@ export default function TimerModal() {
   }
 
   function decrementSeconds(e) {
-    console.log("decrementSeconds", e);
+    console.log("decrementSeconds");
     this.currentTime.seconds = decrementFrom(this.currentTime.seconds, 59);
     this.secondsElt.innerHTML = zeroPadTime(this.currentTime.seconds);
   }
 
   function decrementMinutes(e) {
-    console.log("decrementMinutes", e);
+    console.log("decrementMinutes");
     this.currentTime.minutes = decrementFrom(this.currentTime.minutes, 59);
     this.minutesElt.innerHTML = zeroPadTime(this.currentTime.minutes);
   }
@@ -172,7 +173,7 @@ export default function TimerModal() {
   function decrementHours(e) {
     this.currentTime.hours = decrementFrom(this.currentTime.hours, 24);
     this.hoursElt.innerHTML = zeroPadTime(this.currentTime.hours);
-    console.log("decrementHours", e);
+    console.log("decrementHours");
   }
 
   function remove() {
@@ -190,11 +191,31 @@ export default function TimerModal() {
   }
 
   function save() {
+    const { hours, minutes, seconds } = this.currentTime;
+    console.log(
+      "SAVE RESULT",
+      hoursMinutesSecondsToMilliseconds(hours, minutes, seconds)
+    );
     if (!this.timerName) {
       console.log("no value provided ");
-      this.close()
+      this.close();
     } else {
-      console.log('SAVE ELSE');
+      console.log(
+        "SAVE with name: ",
+        this.timerName,
+        " totalTime: ",
+        hoursMinutesSecondsToMilliseconds(hours, minutes, seconds)
+      );
+      Storage.createTimer(
+        this.timerName,
+        hoursMinutesSecondsToMilliseconds(hours, minutes, seconds)
+      );
+      const created = Storage.getTimerByName(this.timerName);
+      if (created) {
+        let { timer } = created;
+        console.log("timer ", timer);
+        new Timer(timer.name, timer.totalTime).draw();
+      }
     }
     this.close();
   }
