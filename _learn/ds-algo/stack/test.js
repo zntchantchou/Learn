@@ -1,14 +1,7 @@
-import Stack from "./stack";
+import Stack from "./stack.js";
+import toBase from "./aside/base.js";
 
 let s = new Stack();
-s.push('A')
-s.push('B')
-s.push('C')
-s.push('D')
-
-console.log('s.length ', s.length())
-console.log('s.peek before ', s.peek())
-s.pop()
-console.log('s.peek after', s.peek())
-console.log('s.peek after length', s.length())
-
+const res = toBase(55, 2);
+console.log("RES ", res);
+console.log("RES 125 % 8", toBase(125, 8));
