@@ -14,7 +14,7 @@ function Storage() {
   this.getTimers = getTimers;
   this.createTimer = createTimer;
   this.getTimerByName = getTimerByName;
-  this.getRemainingTime = getRemainingTime;
+  this.getTimeElapsedInMs = getTimeElapsedInMs;
   this.get = get;
   this.addTimeStamp = addTimeStamp;
   this.setup = setup;
@@ -41,6 +41,7 @@ function Storage() {
    * @param {number} totalTime
    */
   function createTimer(name, totalTime) {
+    console.log("CREATE TIMER");
     const timer = { name, totalTime, timeStamps: [] };
     let timers = this.getTimers();
     if (Array.isArray(timers)) {
@@ -60,6 +61,7 @@ function Storage() {
   function getTimerByName(name) {
     const timers = this.getTimers();
     let foundAtIndex = -1;
+    console.log("TIMERS ", timers, name);
     const timer = timers.find((elt, index) => {
       if (elt.name === name) {
         foundAtIndex = index;
@@ -76,35 +78,25 @@ function Storage() {
    * @param {string} name
    * @returns PAUSED => the remaining time in MS from the timestamps, RUNNING => 0, STOPPED => totalTime
    */
-  function getRemainingTime(name) {
-    const timer = this.getTimerByName(name);
-    console.log("getRemainingTime ", name);
-    if (timer) {
-      const { timeStamps, totalTime } = timer.timer;
-      console.log("GetTimeremaining timer: ", timeStamps, totalTime);
-      if (!timeStamps.length) {
-        return totalTime;
+  function getTimeElapsedInMs(name) {
+    const storedTimer = this.getTimerByName(name);
+    console.log("getTimeElapsedInMs ", name);
+    let timeElapsedInMs = 0;
+    if (storedTimer && storedTimer?.timer) {
+      const { timeStamps } = storedTimer.timer;
+      if (timeStamps.length < 1) {
+        return 0;
       }
-      if (timeStamps.length % 2 == 0) {
-        console.log("GET TIME REMAINING : PAUSED");
-        const dates = timeStamps.map((t) => new Date(t));
-        const timeElapsedMs = dates.forEach((date, i) => {
-          console.log("PREV", prev);
-          console.log("NEXT", next);
-          console.log("Index", i);
-          if (i > 0 && i % 2 == 0) {
-            console.log("ODD ", i, i % 2);
-            return prev + 2;
-          }
-          console.log("EVEN", i, i % 2, prev, next);
-          return prev;
-        }, 0);
-        console.log("NEW DATES ", dates);
-        console.log("TIME ELAPSED MS ", timeElapsedMs);
-      } else {
-        console.log("GET TIME REMAINING : RUNNING");
+      for (let i = 1; i < timeStamps.length; i += 2) {
+        const diff = new Date(timeStamps[i]) - new Date(timeStamps[i - 1]);
+        if (diff > 0) {
+          timeElapsedInMs += Math.floor(diff / 1000) * 1000;
+        }
+        console.log("diff at " + i + " " + diff);
       }
+      console.log("timeElapsed ", timeElapsedInMs);
     }
+    return timeElapsedInMs;
   }
 
   function deleteTimer(name) {
