@@ -32,11 +32,9 @@ function Snake() {
   this.cells = [];
 
   function setup() {
-    console.log("[SETUP]");
+    // console.log("[SETUP]");
     document.addEventListener("keydown", (e) => this.handleKeyPress(e));
-    console.log("THIS AT START", this);
     this.appendHead();
-    this.appendCell();
     this.appendCell();
     this.appendCell();
     this.appendCell();
@@ -45,7 +43,7 @@ function Snake() {
   }
 
   function appendHead() {
-    console.log(`[addHappendHeadead]`);
+    console.log(`[appendHead]`);
     const cell = new Cell({
       context: this.context,
       width: this.CELL_WIDTH,
@@ -61,6 +59,7 @@ function Snake() {
     // Only pass a move if a breakpoint is reached
     this.getHead()?.draw({
       move: this.isAtBreakPoint() ? this.popNextMove() : null,
+      isAtBreakPoint: this.isAtBreakPoint(),
     });
     requestAnimationFrame(this.animate);
   }
@@ -91,7 +90,6 @@ function Snake() {
     switch (e.keyCode) {
       case 38:
       case 87:
-        direction = this.directions.UP;
         this.saveMove(this.directions.UP);
         break;
       case 40:
@@ -119,7 +117,6 @@ function Snake() {
     // this is to keep the snake within the lines
 
     this.direction = direction;
-    console.log("Direction SET TO : ", this.direction);
   }
 
   function drawGrid() {

@@ -4,6 +4,7 @@ import config from "./config.js";
 function Cell({ context, width, x, y, direction }) {
   this.x = x;
   this.y = y;
+  this.id = (Math.random() * Math.random() * 100).toFixed(0);
   this.next;
   this.velocity = 5;
   this.direction = direction;
@@ -16,18 +17,20 @@ function Cell({ context, width, x, y, direction }) {
   this.generateCell = generateCell;
   this.lastMove = null;
 
-  function draw({ move }) {
-    // this.context.strokeStyle = "green";
+  function draw({ move, isAtBreakPoint = false }) {
     this.context.fillStyle = "black";
     this.context.roundRect(this.x, this.y, this.width, this.width, [2]);
     this.context.fill();
     this.context.stroke();
-    if (this.next) {
-      console.log("this.next");
-      this.next.draw({ move: this.lastMove });
+    if (this.next && isAtBreakPoint) {
+      this.next.draw({ move: this.lastMove, isAtBreakPoint });
+    }
+    if (this.next && !isAtBreakPoint) {
+      this.next.draw({ move: null, isAtBreakPoint });
     }
     if (move) {
       this.setDirection(move.direction);
+      this.lastMove = move;
     }
     this.move();
   }
@@ -83,7 +86,7 @@ function Cell({ context, width, x, y, direction }) {
         }
         break;
       case DIRECTIONS.LEFT:
-        if (this.x <= 0) {
+        if (this.x < 0 - this.width) {
           this.x = config.canvas.height;
         } else {
           this.x -= this.velocity;
