@@ -1,10 +1,11 @@
 import Cell from "./Cell.js";
 import { DIRECTIONS } from "./enums.js";
+import config from "./config.js";
 
 function Snake() {
-  this.CANVAS_HEIGHT = 500;
-  this.CANVAS_WIDTH = 500;
-  this.CELL_WIDTH = this.CANVAS_WIDTH / 25;
+  this.CANVAS_HEIGHT = config.canvas.height;
+  this.CANVAS_WIDTH = config.canvas.width;
+  this.CELL_WIDTH = this.CANVAS_WIDTH / config.canvas.tilesPerRow;
   this.columns = this.CANVAS_WIDTH / this.CELL_WIDTH;
   this.rows = this.CANVAS_HEIGHT / this.CELL_WIDTH;
   this.canvasElt = document.getElementById("canvas");
@@ -15,13 +16,9 @@ function Snake() {
   this.movesPending = [];
   this.saveMove = saveMove;
   this.isAtBreakPoint = isAtBreakPoint;
-  this.archiveMove = archiveMove;
   this.directions = DIRECTIONS;
-  this.addCell = addCell;
+  this.appendCell = appendCell;
   this.length = 0;
-
-  // EVENT LISTENERS
-  // METHODS
   this.drawGrid = drawGrid;
   this.animate = animate.bind(this);
   this.handleKeyPress = handleKeyPress;
@@ -37,12 +34,13 @@ function Snake() {
   function setup() {
     console.log("[SETUP]");
     document.addEventListener("keydown", (e) => this.handleKeyPress(e));
+    console.log("THIS AT START", this);
     this.appendHead();
-    this.addCell({
-      x: this.CANVAS_WIDTH / 2 - 50,
-      y: this.CANVAS_HEIGHT / 2 - 5,
-      direction: this.direction,
-    });
+    this.appendCell();
+    this.appendCell();
+    this.appendCell();
+    this.appendCell();
+    this.appendCell();
     this.animate();
   }
 
@@ -72,40 +70,21 @@ function Snake() {
    * @returns {{direction: string} | null} the next move in line to be rendered
    */
   function popNextMove() {
-    // console.log("----- PopNeXT -----");
     if (!this.movesPending.length) return null;
     this.movesArchived.unshift(this.movesPending[0]);
     this.movesPending.splice(0, 1);
     return this.movesArchived[0];
   }
 
-  function addCell({ x, y, direction }) {
-    // console.log(`AddCell X => ${x}, Y = ${y}`);
-    const cell = new Cell({
-      context: this.context,
-      width: this.CELL_WIDTH,
-      x,
-      y,
-      direction,
-    });
-    const tail = this.getTail();
-    if (tail) {
-      tail.append(cell);
-      console.log("THIS", this);
-    }
+  function appendCell() {
+    const cell = this.getTail().grow();
     this.cells.push(cell);
   }
 
   /** save moves that have yet to be performed */
   function saveMove(direction) {
-    // console.log("[saveMove]");
     this.movesPending.push({ direction });
-    console.log("moves PENDING ====>", this.movesPending);
-    console.log("moves ARCHIVED ====> ", this.movesArchived);
   }
-
-  /** Stores the moves that have already been performed  */
-  function archiveMove() {}
 
   function handleKeyPress(e) {
     let direction;
@@ -114,22 +93,18 @@ function Snake() {
       case 87:
         direction = this.directions.UP;
         this.saveMove(this.directions.UP);
-        // console.log("[up]");
         break;
       case 40:
       case 83:
         this.saveMove(this.directions.DOWN);
-        // console.log("[down]");
         break;
       case 37:
       case 65:
         this.saveMove(this.directions.LEFT);
-        // console.log("[left]");
         break;
       case 39:
       case 68:
         this.saveMove(this.directions.RIGHT);
-        // console.log("[right]");
         break;
       default:
         console.log("[handleKeypress] DEFAULT", this.direction);
@@ -153,7 +128,7 @@ function Snake() {
     // for each row draw all cells the move down
     for (let i = 0; i < this.columns; i++) {
       for (let j = 0; j < this.rows; j++) {
-        this.context.fillStyle = (j + i) % 2 ? "#efefef" : "#cecece";
+        this.context.fillStyle = (j + i) % 2 ? "#FCB24F" : "#FBC04E";
         this.context.beginPath();
         this.context.rect(
           i * this.CELL_WIDTH,
@@ -173,8 +148,6 @@ function Snake() {
     switch (direction) {
       case this.directions.UP:
       case this.directions.DOWN:
-        console.log("Y", y);
-        console.log("CELL WIDTH: ", this.CELL_WIDTH);
         result = y % this.CELL_WIDTH === 0;
         break;
       case this.directions.LEFT:
@@ -182,9 +155,6 @@ function Snake() {
         result = x % this.CELL_WIDTH === 0;
         break;
       default:
-    }
-    if (result == true) {
-      console.log("IS AT BREAK POINT direction: ", result);
     }
     return result;
   }
