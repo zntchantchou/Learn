@@ -6,7 +6,7 @@ function Cell({ context, width, x, y, direction }) {
   this.y = y;
   this.id = (Math.random() * Math.random() * 100).toFixed(0);
   this.next = null;
-  this.velocity = 5;
+  this.velocity = 10;
   this.padding = 3;
   this.direction = direction;
   this.width = width;
