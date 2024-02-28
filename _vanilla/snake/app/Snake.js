@@ -1,6 +1,6 @@
-import Cell from "./Cell.js";
-import { DIRECTIONS } from "./enums.js";
-import config from "./config.js";
+import Cell from './Cell.js';
+import { DIRECTIONS } from '../constants/enums.js';
+import config from '../constants/config.js';
 
 function Snake() {
   this.CANVAS_HEIGHT = config.canvas.height;
@@ -8,8 +8,8 @@ function Snake() {
   this.CELL_WIDTH = this.CANVAS_WIDTH / config.canvas.tilesPerRow;
   this.columns = this.CANVAS_WIDTH / this.CELL_WIDTH;
   this.rows = this.CANVAS_HEIGHT / this.CELL_WIDTH;
-  this.canvasElt = document.getElementById("canvas");
-  this.context = this.canvasElt.getContext("2d");
+  this.canvasElt = document.getElementById('canvas');
+  this.context = this.canvasElt.getContext('2d');
   this.posX = this.CANVAS_WIDTH / 2;
   this.posY = this.CANVAS_HEIGHT / 2;
   this.movesArchived = [];
@@ -25,31 +25,30 @@ function Snake() {
   this.getRandomDirection = getRandomDirection;
   this.setDirection = setDirection;
   this.setup = setup;
+
   this.getHead = getHead;
   this.getTail = getTail;
   this.popNextMove = popNextMove;
   this.appendHead = appendHead;
+  /**
+   * @type {[] || Cell}
+   */
   this.cells = [];
 
   function setup() {
-    // console.log("[SETUP]");
-    document.addEventListener("keydown", (e) => this.handleKeyPress(e));
+    document.addEventListener('keydown', (e) => this.handleKeyPress(e));
     this.appendHead();
-    this.appendCell();
-    this.appendCell();
-    this.appendCell();
-    this.appendCell();
     this.animate();
   }
 
   function appendHead() {
-    console.log(`[appendHead]`);
+    console.log('[appendHead]');
     const cell = new Cell({
       context: this.context,
       width: this.CELL_WIDTH,
       x: this.CANVAS_WIDTH / 2,
       y: this.CANVAS_HEIGHT / 2,
-      direction: this.getRandomDirection(),
+      direction: this.getRandomDirection()
     });
     this.cells = [cell];
   }
@@ -59,7 +58,7 @@ function Snake() {
     // Only pass a move if a breakpoint is reached
     this.getHead()?.draw({
       move: this.isAtBreakPoint() ? this.popNextMove() : null,
-      isAtBreakPoint: this.isAtBreakPoint(),
+      isAtBreakPoint: this.isAtBreakPoint()
     });
     requestAnimationFrame(this.animate);
   }
@@ -76,6 +75,7 @@ function Snake() {
   }
 
   function appendCell() {
+    console.log('AppendCell');
     const cell = this.getTail().grow();
     this.cells.push(cell);
   }
@@ -83,10 +83,10 @@ function Snake() {
   /** save moves that have yet to be performed */
   function saveMove(direction) {
     this.movesPending.push({ direction });
+    this.appendCell();
   }
 
   function handleKeyPress(e) {
-    let direction;
     switch (e.keyCode) {
       case 38:
       case 87:
@@ -105,7 +105,7 @@ function Snake() {
         this.saveMove(this.directions.RIGHT);
         break;
       default:
-        console.log("[handleKeypress] DEFAULT", this.direction);
+        e.preventDefault();
     }
   }
 
@@ -113,19 +113,16 @@ function Snake() {
     if (!Object.values(this.directions).includes(direction)) {
       throw new Error(`Invalid direction: ${direction}`);
     }
-    // only peforms the direction change when a breakpoint is reached
-    // this is to keep the snake within the lines
-
     this.direction = direction;
   }
 
   function drawGrid() {
     this.canvasElt.width = this.CANVAS_WIDTH;
     this.canvasElt.height = this.CANVAS_HEIGHT;
-    // for each row draw all cells the move down
+    // Draw grid row by row
     for (let i = 0; i < this.columns; i++) {
-      for (let j = 0; j < this.rows; j++) {
-        this.context.fillStyle = (j + i) % 2 ? "#FCB24F" : "#FBC04E";
+      for (let j = 0; j <= this.rows; j++) {
+        this.context.fillStyle = (j + i) % 2 ? '#FCB24F' : '#FBC04E';
         this.context.beginPath();
         this.context.rect(
           i * this.CELL_WIDTH,
@@ -138,10 +135,13 @@ function Snake() {
     }
   }
 
-  /** Whether the snake's head is crossing a line at this frame*/
+  /**
+   * Whether the snake's head is crossing a line at this frame
+   * @returns {boolean}
+   */
   function isAtBreakPoint() {
     let result = false;
-    let { x, y, direction } = this.getHead();
+    const { x, y, direction } = this.getHead();
     switch (direction) {
       case this.directions.UP:
       case this.directions.DOWN:
@@ -156,12 +156,20 @@ function Snake() {
     return result;
   }
 
+  /**
+   * gets the first cell
+   * @returns {Cell?}
+   */
   function getHead() {
-    return this.cells[0];
+    return this.cells[0] || null;
   }
 
+  /**
+   * gets the last added cell
+   * @returns {Cell?}
+   */
   function getTail() {
-    return this.cells[this.cells.length - 1];
+    return this.cells[this.cells.length - 1] || null;
   }
 
   function getRandomDirection() {

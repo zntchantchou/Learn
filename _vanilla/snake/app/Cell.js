@@ -1,12 +1,13 @@
-import { DIRECTIONS } from "./enums.js";
-import config from "./config.js";
+import { DIRECTIONS } from '../constants/enums.js';
+import config from '../constants/config.js';
 
 function Cell({ context, width, x, y, direction }) {
   this.x = x;
   this.y = y;
   this.id = (Math.random() * Math.random() * 100).toFixed(0);
-  this.next;
+  this.next = null;
   this.velocity = 5;
+  this.padding = 3;
   this.direction = direction;
   this.width = width;
   this.draw = draw;
@@ -18,28 +19,37 @@ function Cell({ context, width, x, y, direction }) {
   this.lastMove = null;
 
   function draw({ move, isAtBreakPoint = false }) {
-    this.context.fillStyle = "black";
-    this.context.roundRect(this.x, this.y, this.width, this.width, [2]);
-    this.context.fill();
+    this.context.roundRect(
+      this.x + this.padding,
+      this.y + this.padding,
+      this.width - this.padding,
+      this.width - this.padding,
+      [5]
+    );
     this.context.stroke();
+    this.context.fillStyle = 'black';
+    this.context.fill();
+    if (move) {
+      this.setDirection(move.direction);
+    }
+    this.move();
     if (this.next && isAtBreakPoint) {
       this.next.draw({ move: this.lastMove, isAtBreakPoint });
     }
+
     if (this.next && !isAtBreakPoint) {
       this.next.draw({ move: null, isAtBreakPoint });
     }
     if (move) {
-      this.setDirection(move.direction);
       this.lastMove = move;
     }
-    this.move();
   }
 
   function grow() {
-    console.log("[grow]");
+    console.log('[grow]');
     const cell = this.generateCell();
     this.next = cell;
-    console.log("[grow] NEXT", this.next);
+    console.log('[grow] NEXT', this.next);
     return cell;
   }
 
@@ -64,7 +74,7 @@ function Cell({ context, width, x, y, direction }) {
         x = this.x - this.width;
         break;
       default:
-        console.log("Move DEFAULT");
+        console.log('Move DEFAULT');
     }
     return new Cell({ width, context, x, y, direction: this.direction });
   }
@@ -100,7 +110,7 @@ function Cell({ context, width, x, y, direction }) {
         }
         break;
       default:
-        console.log("Move DEFAULT");
+        console.log('Move DEFAULT');
     }
   }
 

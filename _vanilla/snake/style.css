@@ -10,7 +10,16 @@
   align-items: center;
 }
 
+
+#overlay {
+  visibility: hidden;
+  position: absolute;
+  background-color: grey;
+  height: 500px;
+  width: 500px;
+}
 #canvas {
   background-color: #cecece;
   background-color: black;
+  border: solid darkgrey 0.2rem;
 }

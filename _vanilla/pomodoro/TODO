@@ -3,20 +3,20 @@ Persistence:
 
 Timer-editor: 
   Timer: 
-    ☐ Add delete btn on each timer
-    ☐ implement deleteTimer
-    ☐ implement createTimer
-    ☐ Freshly created timer should be displayed on 'timers' page
-    ☐ Move event listeners in a separate function
-    CreateTimer: 
-      ☐ Do not allow creation if time is less than one second
-      ☐ Do not allow creation if timer name is empty
-      ☐ Do not allow creation if timer name exists
+  ☐ Add delete btn on each timer
+  ☐ implement deleteTimer
+  ☐ implement createTimer
+  ☐ Freshly created timer should be displayed on 'timers' page
+  ☐ Move event listeners in a separate function
+  CreateTimer: 
+    ☐ Do not allow creation if time is less than one second
+    ☐ Do not allow creation if timer name is empty
+    ☐ Do not allow creation if timer name exists
 
-    ☐ Display task name in normal mode 
-    ☐ Add an edit btn on each timer
-    ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
-    
+  ☐ Display task name in normal mode 
+  ☐ Add an edit btn on each timer
+  ☐ Add the time it will be when the timer ends, in a tab, projected finishing time
+  
     Timer Interactions:
 
     ☐ Starting one timer should pause the current Timer
@@ -47,18 +47,11 @@ Timer-editor:
   ✔ Add an editMode overlay @started(24-02-06 14:37) @done(24-02-06 14:37) @lasted(39s)
   ✔ Implement restart btn @started(24-02-06 19:12) @done(24-02-06 20:08) @lasted(56m35s)
   ✔ Clicking the timer should open an edit Popup @done(24-02-06 20:08)
-    
-
+  
   Timer:
   - Start interval at app start
   - List of interaction for each timer : ["2024-02-08T15:32:44.130Z", 2024-02-08T15:32:55.416Z", "2024-02-08T15:33:08.375Z"]
   - Each interaction (play, pause, tabclose) should add current date to the timer in storage
   - The time elapsed is the sum of all the diffs between times at even and odd indexes.
-  
-   ["2024-02-08T15:32:44.130Z", 2024-02-08T15:32:55.416Z", "2024-02-08T15:33:08.375Z"]
-
-
-
-
 
   

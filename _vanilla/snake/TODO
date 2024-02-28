@@ -1,0 +1,14 @@
+Food:
+  ☐ Add Random coordinates function
+  ☐ Add food at game start 
+  ☐ Add food when snake grows
+
+Game Over: 
+
+  ☐ Implement collisions with walls
+  ☐ Implement collision with self
+
+Score: 
+
+  ☐ Implement 
+  ☐ Display
