@@ -1,7 +1,6 @@
 export default {
   canvas: {
-    width: 500,
-    height: 500,
-    tilesPerRow: 20,
-  },
+    cellWidth: 20,
+    cellsPerRow: 20
+  }
 };
