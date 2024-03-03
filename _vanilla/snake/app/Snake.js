@@ -21,10 +21,8 @@ function Snake() {
   this.isAtBreakPoint = isAtBreakPoint;
   this.popNextMove = popNextMove;
   this.direction;
-  this.directions = DIRECTIONS;
-  this.xDirections = [this.directions.LEFT, this.directions.RIGHT];
-  this.yDirections = [this.directions.UP, this.directions.DOWN];
-  this.length = 0;
+  this.xDirections = [DIRECTIONS.LEFT, DIRECTIONS.RIGHT];
+  this.yDirections = [DIRECTIONS.UP, DIRECTIONS.DOWN];
   this.drawGrid = drawGrid;
   this.keepInbound = keepInbound;
   this.reverseDirection = reverseDirection;
@@ -41,6 +39,7 @@ function Snake() {
   this.linesCrossed = 0;
   this.tailLength = 5;
   this.drawTail = drawTail;
+  this.coordsFromMove = coordsFromMove;
 
   function setup() {
     document.addEventListener('keydown', (e) => this.handleKeyPress(e));
@@ -54,7 +53,7 @@ function Snake() {
   function playNextMove() {
     let nextMove = this.popNextMove();
     if (nextMove) {
-      console.log('NextMove', nextMove);
+      // the moves are stored as their opposite to avoid reversing them while drawing the canvas at each frame
       this.setDirection(this.reverseDirection(nextMove.direction));
     }
   }
@@ -93,16 +92,29 @@ function Snake() {
     return reverse[direction] || null;
   }
 
-  function move() {
-    const moveFnByDirection = {
-      [DIRECTIONS.LEFT]: () => (this.x -= this.velocity),
-      [DIRECTIONS.RIGHT]: () => (this.x += this.velocity),
-      [DIRECTIONS.UP]: () => (this.y -= this.velocity),
-      [DIRECTIONS.DOWN]: () => (this.y += this.velocity)
+  function coordsFromMove({ x, y, direction, velocity }) {
+    if (!direction || !Object.values(DIRECTIONS).includes(direction)) {
+      throw new Error('[Coords From Move]: Invalid direction provided');
+    }
+    const moveFns = {
+      [DIRECTIONS.LEFT]: () => ({ y, x: x - velocity }),
+      [DIRECTIONS.RIGHT]: () => ({ y, x: x + velocity }),
+      [DIRECTIONS.UP]: () => ({ x, y: y - velocity }),
+      [DIRECTIONS.DOWN]: () => ({ x, y: y + velocity })
     };
+    return moveFns[direction]();
+  }
+
+  function move() {
     this.keepInbound();
-    let moveFn = moveFnByDirection[this.direction];
-    if (moveFn) moveFn();
+    const coords = this.coordsFromMove({
+      x: this.x,
+      y: this.y,
+      velocity: this.velocity,
+      direction: this.direction
+    });
+    this.x = coords.x;
+    this.y = coords.y;
   }
 
   function keepInbound() {
@@ -138,10 +150,23 @@ function Snake() {
   }
 
   function drawTail() {
-    console.log('PREVMoves', this.previousMoves);
     if (this.tailLength < 1) {
       return;
     }
+
+    let distanceCovered = 0;
+    let iterations = 0;
+    while (this.previousMoves.next() && distanceCovered < this.tailLength) {
+      let current = this.previousMoves.peek();
+      iterations++;
+      for (let i = 0; i < Math.min(current.distance, this.tailLength); i++) {
+        console.log('drawing Cell: ', i);
+      }
+      distanceCovered += current.distance;
+      console.log('current move: ', current);
+      console.log('Distance from last move: ', distanceCovered);
+    }
+    this.previousMoves.front();
   }
 
   /**
@@ -152,65 +177,39 @@ function Snake() {
     if (!this.nextMoves.length) return null;
     this.previousMoves.insert({
       item: this.nextMoves[0],
-      distance: this.linesCrossed,
       maxSize: this.tailLength
     });
     this.nextMoves.splice(0, 1);
-    return this.previousMoves.peek();
+    return this.previousMoves.top();
   }
 
   /** save moves that have yet to be performed */
   function saveMove({ direction }) {
-    this.nextMoves.push({ direction, linesCrossed: null });
-    // flush older useless moves depending on the snake's size
-    // a snake of size 3 cannot display 4 moves
-    // this.previousMoves.splice(
-    //   this.tailLength - 1,
-    //   this.previousMoves.length - this.tailLength + 1
-    // );
-    // update the distance information on the previous move
-    // if (this.previousMoves.size() > 0) {
-    // this.previousMoves[0].linesCrossed = this.linesCrossed;
-    // }/
+    this.nextMoves.push({ direction, linesCrossed: this.linesCrossed });
   }
 
   function handleKeyPress(e) {
-    switch (e.keyCode) {
-      case 38:
-      case 87:
-        this.saveMove({
-          direction: this.directions.DOWN,
-          linesCrossed: this.linesCrossed
-        });
-        break;
-      case 40:
-      case 83:
-        this.saveMove({
-          direction: this.directions.UP,
-          linesCrossed: this.linesCrossed
-        });
-        break;
-      case 37:
-      case 65:
-        this.saveMove({
-          direction: this.directions.RIGHT,
-          linesCrossed: this.linesCrossed
-        });
-        break;
-      case 39:
-      case 68:
-        this.saveMove({
-          direction: this.directions.LEFT,
-          linesCrossed: this.linesCrossed
-        });
-        break;
-      default:
-        e.preventDefault();
+    const directionsByKeyCode = {
+      [38]: DIRECTIONS.DOWN,
+      [87]: DIRECTIONS.DOWN,
+      [40]: DIRECTIONS.UP,
+      [83]: DIRECTIONS.UP,
+      [37]: DIRECTIONS.RIGHT,
+      [65]: DIRECTIONS.RIGHT,
+      [39]: DIRECTIONS.LEFT,
+      [68]: DIRECTIONS.LEFT
+    };
+    const direction = directionsByKeyCode[e.keyCode];
+    if (direction && direction !== this.direction) {
+      this.saveMove({
+        direction,
+        linesCrossed: this.linesCrossed
+      });
     }
   }
 
   function setDirection(direction) {
-    if (!Object.values(this.directions).includes(direction)) {
+    if (!Object.values(DIRECTIONS).includes(direction)) {
       throw new Error(`Invalid direction: ${direction}`);
     }
     this.direction = direction;
@@ -251,10 +250,8 @@ function Snake() {
   }
 
   function getRandomDirection() {
-    const randomDirection = Object.values(this.directions)[
-      Math.floor(Math.random() * 4)
-    ];
-    console.log('RDNM', randomDirection);
+    const randomDirection =
+      Object.values(DIRECTIONS)[Math.floor(Math.random() * 4)];
     return randomDirection;
   }
 }
@@ -275,29 +272,51 @@ function CappedCollection() {
   this.peek = peek;
   /** number of elements in the collection */
   this.size = size;
-  /** delete unplayable passed moves */
-  this.flush = flush;
-  this.totalDistance = 0;
+  this.position = 0;
+  this.top = top;
+  this.next = next;
+  this.front = front;
+  this.lastDistance = 0;
+  this.distance = 0;
 
   function log(...msg) {
     console.log('[Capped List] ', ...msg);
   }
 
-  function peek() {
-    this.log('peek');
-    return this.collection[0];
-  }
-
   function insert({ item, maxSize }) {
-    this.log('insert');
-    this.log('max', maxSize);
+    this.log('insert', item);
+    let distance = this.lastDistance
+      ? this.lastDistance - item.linesCrossed
+      : item.linesCrossed;
+    item.distance = Math.abs(distance);
+    console.log('item', item);
     this.collection.unshift(item);
     this.collection.splice(maxSize, this.collection.length - maxSize);
+    this.lastDistance = item.linesCrossed;
   }
-
-  function flush(max) {}
 
   function size() {
     return this.collection.length;
+  }
+
+  function peek() {
+    // this.log('peek');
+    return this.collection[this.position];
+  }
+
+  function next() {
+    if (this.position < this.size() - 1) {
+      this.position++;
+      return true;
+    }
+    return false;
+  }
+
+  function top() {
+    return this.collection[0];
+  }
+
+  function front() {
+    this.position = 0;
   }
 }

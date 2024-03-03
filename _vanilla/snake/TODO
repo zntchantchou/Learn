@@ -1,3 +1,8 @@
+☐ Prevent opposite move
+☐ Draw tail
+☐ Choose best datastructure for previous moves
+
+
 Food:
   ☐ Add Random coordinates function
   ☐ Add food at game start 
