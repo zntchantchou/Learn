@@ -37,8 +37,9 @@ function Snake() {
   this.logCoords = logCoords;
   this.initialized = false;
   this.linesCrossed = 0;
-  this.tailLength = 5;
+  this.tailLength = 0;
   this.drawTail = drawTail;
+  this.drawCell = drawCell;
   this.coordsFromMove = coordsFromMove;
 
   function setup() {
@@ -53,6 +54,7 @@ function Snake() {
   function playNextMove() {
     let nextMove = this.popNextMove();
     if (nextMove) {
+      console.log('NEXT MOVE', nextMove);
       // the moves are stored as their opposite to avoid reversing them while drawing the canvas at each frame
       this.setDirection(this.reverseDirection(nextMove.direction));
     }
@@ -60,6 +62,7 @@ function Snake() {
 
   function animate() {
     if (!this.initialized) {
+      console.log('STARTING');
       this.playNextMove();
     }
     if (this.isAtBreakPoint()) {
@@ -92,15 +95,18 @@ function Snake() {
     return reverse[direction] || null;
   }
 
-  function coordsFromMove({ x, y, direction, velocity }) {
+  function coordsFromMove({ x, y, direction, offset }) {
+    console.log('direction', direction);
     if (!direction || !Object.values(DIRECTIONS).includes(direction)) {
       throw new Error('[Coords From Move]: Invalid direction provided');
     }
+    // head moves using velocity, body moves by offset relative to head or turning point
+    let distance = offset ? offset * this.cellWidth : this.velocity;
     const moveFns = {
-      [DIRECTIONS.LEFT]: () => ({ y, x: x - velocity }),
-      [DIRECTIONS.RIGHT]: () => ({ y, x: x + velocity }),
-      [DIRECTIONS.UP]: () => ({ x, y: y - velocity }),
-      [DIRECTIONS.DOWN]: () => ({ x, y: y + velocity })
+      [DIRECTIONS.LEFT]: () => ({ y, x: x - distance }),
+      [DIRECTIONS.RIGHT]: () => ({ y, x: x + distance }),
+      [DIRECTIONS.UP]: () => ({ x, y: y - distance }),
+      [DIRECTIONS.DOWN]: () => ({ x, y: y + distance })
     };
     return moveFns[direction]();
   }
@@ -110,7 +116,6 @@ function Snake() {
     const coords = this.coordsFromMove({
       x: this.x,
       y: this.y,
-      velocity: this.velocity,
       direction: this.direction
     });
     this.x = coords.x;
@@ -149,22 +154,60 @@ function Snake() {
     this.context.fill();
   }
 
+  function drawCell({ x, y }) {
+    console.log('------ DRAWING CELL ------');
+    this.context.roundRect(
+      x,
+      y,
+      this.cellWidth - this.padding,
+      this.cellWidth - this.padding,
+      [5]
+    );
+    this.context.stroke();
+    this.context.fillStyle = 'darkGray';
+    this.context.fill();
+  }
+
   function drawTail() {
     if (this.tailLength < 1) {
       return;
     }
-
+    // total cells drawn thus far
     let distanceCovered = 0;
-    let iterations = 0;
+    let moveIndex = 0;
+    let pivot = { x: this.x, y: this.y };
     while (this.previousMoves.next() && distanceCovered < this.tailLength) {
       let current = this.previousMoves.peek();
-      iterations++;
-      for (let i = 0; i < Math.min(current.distance, this.tailLength); i++) {
-        console.log('drawing Cell: ', i);
+      console.log(
+        'DISTANCE COVERED ',
+        distanceCovered,
+        this.tailLength - distanceCovered
+      );
+      const playableIndex = Math.min(
+        current.distance,
+        this.tailLength - distanceCovered
+      );
+      for (let i = 0; i < playableIndex; i++) {
+        // this is the tail so the minimum offset needs to be 1, 0 would draw on top of the head
+        const coords = this.coordsFromMove({
+          direction: current.direction,
+          offset: i + 1,
+          x: pivot.x,
+          y: pivot.y
+        });
+        if (i == playableIndex - 1) {
+          console.log('== OUT ===========', pivot, coords);
+          console.log('== OUT INDEX ==', i + 1);
+          console.log('== OUT PIVOT ==', pivot);
+          console.log('== OUT COORDS ==', coords);
+          console.log('== OUT COVERED ==', distanceCovered);
+          distanceCovered += i;
+          pivot.x = coords.x;
+          pivot.y = coords.y;
+          console.log('== OUT PIVOT AFTER ==', pivot);
+        }
+        this.drawCell({ x: coords.x, y: coords.y });
       }
-      distanceCovered += current.distance;
-      console.log('current move: ', current);
-      console.log('Distance from last move: ', distanceCovered);
     }
     this.previousMoves.front();
   }
@@ -179,7 +222,9 @@ function Snake() {
       item: this.nextMoves[0],
       maxSize: this.tailLength
     });
+    console.log('this.prevMoves', this.previousMoves.top());
     this.nextMoves.splice(0, 1);
+    this.tailLength++;
     return this.previousMoves.top();
   }
 
@@ -289,9 +334,7 @@ function CappedCollection() {
       ? this.lastDistance - item.linesCrossed
       : item.linesCrossed;
     item.distance = Math.abs(distance);
-    console.log('item', item);
     this.collection.unshift(item);
-    this.collection.splice(maxSize, this.collection.length - maxSize);
     this.lastDistance = item.linesCrossed;
   }
 
