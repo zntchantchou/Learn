@@ -1,5 +1,4 @@
-import Snake from "./app/Snake.js";
+import Snake from "./app/Snake.js"
 
-const snake = new Snake();
-snake.setup();
-console.log("Snake");
+const snake = new Snake()
+console.log("Snake")

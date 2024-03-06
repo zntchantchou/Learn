@@ -12,9 +12,8 @@
   "dependencies": {
     "browser-sync": "^3.0.2"
   },
-  "prettier": {
-    "trailingComma": "none",
-    "singleQuote": true,
-    "parser": "babel"
+  "type": "module",
+  "devDependencies": {
+    "prettier": "3.2.5"
   }
 }
