@@ -37,6 +37,7 @@ function Snake() {
     this.popNextMove = popNextMove
     this.getInboundCoords = getInboundCoords
     this.initialized = false
+    this.flushMoves = flushMoves
     this.cells = [
         {
             x: this.canvasWidth / 2,
@@ -44,6 +45,7 @@ function Snake() {
             direction: null
         }
     ]
+    this.moveUpdateFns = []
 
     this.queueMove = queueMove
     this.setup()
@@ -63,11 +65,7 @@ function Snake() {
     }
 
     function updateCellCoords(cell, index) {
-        if (
-            isNaN(cell.x) ||
-            isNaN(cell.y) ||
-            !Object.values(DIRECTIONS).includes(cell.direction)
-        ) {
+        if (isNaN(cell.x) || isNaN(cell.y) || !Object.values(DIRECTIONS).includes(cell.direction)) {
             throw new Error("[getUpdatedCoords] Invalid coords")
         }
         const coordsFromDirection = {
@@ -119,11 +117,8 @@ function Snake() {
 
     function popNextMove() {
         if (this.queuedMoves && this.queuedMoves.length > 0) {
-            console.log("QUEUED MOVE", this.queuedMoves.length)
             const nextMove = this.queuedMoves[0]
             this.nextMoves.push(nextMove)
-            console.log("popNextMove", nextMove)
-            console.log("NEXTMOVES ", this.nextMoves)
             this.queuedMoves.splice(0, 1)
             return nextMove
         }
@@ -135,21 +130,35 @@ function Snake() {
         if (!this.nextMoves.length) {
             return cell
         }
-        let move = this.nextMoves.find((mv) => mv.playCount === index)
-        if (move && move.direction) {
-            console.log("FOUND A MOVE", move)
-            return { ...cell, direction: move.direction }
+        let moveIndex = this.nextMoves.findIndex((mv) => mv.playCount === index)
+        if (moveIndex > -1) {
+            this.moveUpdateFns.push(() => {
+                this.nextMoves[moveIndex].playCount++
+            })
+            return {
+                ...cell,
+                direction: this.nextMoves[moveIndex].direction
+            }
         }
         return cell
     }
 
+    function flushMoves() {
+        this.nextMoves = this.nextMoves.filter((move) => move.playCount < this.cells.length)
+    }
+
     function animate() {
         this.drawGrid()
+
         let isAtBreakPoint = this.isAtBreakPoint(this.getHead())
         if (isAtBreakPoint) {
+            if (this.moveUpdateFns.length) {
+                for (let updateMoveCount of this.moveUpdateFns) updateMoveCount()
+            }
+            this.moveUpdateFns = []
             this.popNextMove()
+            this.flushMoves()
         }
-
         this.cells = this.cells.map((cell, index) => {
             if (isAtBreakPoint) {
                 return this.updateCellCoords(this.updateCellDirection(cell, index))
@@ -179,17 +188,16 @@ function Snake() {
         if (x <= 0 - this.cellWidth) {
             x = this.canvasWidth
         }
-        return { x, y }
+        return {
+            x,
+            y
+        }
     }
 
     function drawCell({ x, y }) {
-        this.context.roundRect(
-            x,
-            y,
-            this.cellWidth - this.padding,
-            this.cellWidth - this.padding,
-            [5]
-        )
+        this.context.roundRect(x, y, this.cellWidth - this.padding, this.cellWidth - this.padding, [
+            5
+        ])
         this.context.stroke()
         this.context.fillStyle = "black"
         this.context.fill()
