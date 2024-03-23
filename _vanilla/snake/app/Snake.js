@@ -15,7 +15,6 @@ function Snake() {
     this.x = this.canvasWidth / 2
     this.y = this.canvasHeight / 2
     this.length = 1
-    // moves
     this.isAtBreakPoint = isAtBreakPoint
     this.direction
     this.xDirections = [DIRECTIONS.LEFT, DIRECTIONS.RIGHT]
@@ -45,6 +44,7 @@ function Snake() {
             direction: null
         }
     ]
+    this.log = log
     this.moveUpdateFns = []
 
     this.queueMove = queueMove
@@ -126,7 +126,6 @@ function Snake() {
     }
 
     function updateCellDirection(cell, index) {
-        console.log("updateCellDirection", index)
         if (!this.nextMoves.length) {
             return cell
         }
@@ -149,7 +148,6 @@ function Snake() {
 
     function animate() {
         this.drawGrid()
-
         let isAtBreakPoint = this.isAtBreakPoint(this.getHead())
         if (isAtBreakPoint) {
             if (this.moveUpdateFns.length) {
@@ -169,9 +167,17 @@ function Snake() {
             this.drawCell(cell)
         }
         this.initialized = true
+        this.log()
         requestAnimationFrame(this.animate)
     }
 
+    function log() {
+        if (this.queuedMoves.length || this.nextMoves.length) {
+            console.log("#--------------------------")
+            console.log("#NEXTMOVE: ", this.nextMoves)
+            console.log("#QUEUED MOVES: ", this.queuedMoves)
+        }
+    }
     function getInboundCoords({ x: xPosition, y: yPosition }) {
         // snake reappears on opposite side if it hits a wall
         let x = xPosition
@@ -196,10 +202,10 @@ function Snake() {
 
     function drawCell({ x, y }) {
         this.context.roundRect(x, y, this.cellWidth - this.padding, this.cellWidth - this.padding, [
-            5
+            7
         ])
         this.context.stroke()
-        this.context.fillStyle = "black"
+        this.context.fillStyle = "purple"
         this.context.fill()
     }
 
